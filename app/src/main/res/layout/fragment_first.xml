@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  tools:context=".fragments.FirstFragment">
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent">
+
+    <!--    Menu and Account selection-->
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="8dp"
+      android:orientation="horizontal">
+
+      <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
+
+        <ImageView
+          android:layout_width="32dp"
+          android:layout_height="32dp"
+          android:layout_marginLeft="12dp"
+          android:src="@drawable/arrow_down" />
+      </LinearLayout>
+
+      <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="right"
+        android:orientation="horizontal">
+
+        <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_gravity="center|center_vertical"
+          android:text="HDFC 6021"
+          android:textSize="20dp"
+          android:textStyle="bold" />
+
+        <ImageView
+          android:layout_width="32dp"
+          android:layout_height="32dp"
+          android:layout_marginLeft="12dp"
+          android:layout_marginRight="12dp"
+          android:src="@drawable/arrow_down" />
+
+      </LinearLayout>
+
+    </LinearLayout>
+
+
+    <!--    Total income part-->
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="vertical">
+
+      <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:orientation="horizontal">
+
+        <!--      For Income, Outcome, Total-->
+        <LinearLayout
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_weight="1"
+          android:gravity="center"
+          android:orientation="vertical">
+
+          <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="6dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="6dp"
+            android:layout_marginBottom="8dp"
+            android:layout_weight="1"
+            android:text="Income"
+            android:textColor="#35A700"
+            android:textSize="@dimen/summary_details_text"
+            android:textStyle="bold" />
+
+
+          <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="6dp"
+            android:layout_marginRight="6dp"
+            android:layout_marginBottom="8dp"
+            android:layout_weight="1"
+            android:text="$ 45593"
+            android:textColor="#35A700"
+            android:textSize="@dimen/summary_details_number"
+            android:textStyle="normal" />
+
+        </LinearLayout>
+
+        <!--      For Income, Outcome, Total-->
+        <LinearLayout
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_weight="1"
+          android:gravity="center"
+          android:orientation="vertical">
+
+          <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="6dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="6dp"
+            android:layout_marginBottom="8dp"
+            android:layout_weight="1"
+            android:text="Outgoing"
+            android:textColor="#FF4800"
+            android:textSize="@dimen/summary_details_text"
+            android:textStyle="bold" />
+
+
+          <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="6dp"
+            android:layout_marginRight="6dp"
+            android:layout_marginBottom="8dp"
+            android:layout_weight="1"
+            android:text="$ 45593"
+            android:textColor="#FF4800"
+            android:textSize="@dimen/summary_details_number"
+            android:textStyle="normal" />
+
+        </LinearLayout>
+
+        <!--      For Income, Outcome, Total-->
+        <LinearLayout
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_weight="1"
+          android:gravity="center"
+          android:orientation="vertical">
+
+          <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="6dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="6dp"
+            android:layout_marginBottom="8dp"
+            android:layout_weight="1"
+            android:text="Outgoing"
+            android:textColor="#FF4800"
+            android:textSize="@dimen/summary_details_text"
+            android:textStyle="bold" />
+
+
+          <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="6dp"
+            android:layout_marginRight="6dp"
+            android:layout_marginBottom="8dp"
+            android:layout_weight="1"
+            android:text="$ 45593"
+            android:textColor="#FF4800"
+            android:textSize="@dimen/summary_details_number"
+            android:textStyle="normal" />
+
+        </LinearLayout>
+      </LinearLayout>
+
+      <View
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:background="@drawable/gradient_bar_gray" />
+
+    </LinearLayout>
+
+
+    <!--    Transactions-->
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:orientation="vertical">
+
+
+      <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewTransactions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+
+    </LinearLayout>
+
+  </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
