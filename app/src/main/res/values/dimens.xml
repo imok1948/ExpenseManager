@@ -7,4 +7,14 @@
   <dimen name="transactions_detail_image_size">48dp</dimen>
   <dimen name="transactions_detail_amount_size">18dp</dimen>
   <dimen name="transactions_detail_day_size">16dp</dimen>
+  <dimen name="button_add_income_bottom_margin">120dp</dimen>
+  <dimen name="button_add_expense_bottom_margin">50dp</dimen>
+  <dimen name="back_arrow_top">32dp</dimen>
+  <dimen name="margin_left_back_arrow_top">8dp</dimen>
+  <dimen name="margin_top_back_arrow_top">8dp</dimen>
+  <dimen name="textsize_title">18dp</dimen>
+  <dimen name="margin_medium">10dp</dimen>
+  <dimen name="padding_sides_normal">14dp</dimen>
+  <dimen name="padding_sides_small">10dp</dimen>
+  <dimen name="layout_gap_medium">24dp</dimen>
 </resources>

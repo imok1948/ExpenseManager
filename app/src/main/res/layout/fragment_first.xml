@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
@@ -14,12 +14,16 @@
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent">
 
+    <View
+      android:layout_width="match_parent"
+      android:layout_height="22dp" />
     <!--    Menu and Account selection-->
     <LinearLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_marginTop="8dp"
-      android:orientation="horizontal">
+      android:orientation="horizontal"
+      app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior">
 
       <LinearLayout
         android:layout_width="0dp"
@@ -30,7 +34,7 @@
           android:layout_width="32dp"
           android:layout_height="32dp"
           android:layout_marginLeft="12dp"
-          android:src="@drawable/arrow_down" />
+          android:src="@drawable/icon_menu" />
       </LinearLayout>
 
       <LinearLayout
@@ -49,11 +53,12 @@
           android:textStyle="bold" />
 
         <ImageView
-          android:layout_width="32dp"
-          android:layout_height="32dp"
+          android:layout_width="24dp"
+          android:layout_height="24dp"
+          android:layout_gravity="center"
           android:layout_marginLeft="12dp"
           android:layout_marginRight="12dp"
-          android:src="@drawable/arrow_down" />
+          android:src="@drawable/arrow_down_icon" />
 
       </LinearLayout>
 
@@ -206,4 +211,33 @@
 
   </LinearLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+  <com.google.android.material.floatingactionbutton.FloatingActionButton
+    android:id="@+id/button_add_income"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom|end"
+    android:layout_marginEnd="@dimen/fab_margin"
+    android:layout_marginBottom="@dimen/button_add_income_bottom_margin"
+    android:background="#35A700"
+    android:backgroundTint="#35A700"
+    android:src="@android:drawable/ic_input_add"
+    app:borderWidth="0dp"
+    app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior" />
+
+
+  <com.google.android.material.floatingactionbutton.FloatingActionButton
+    android:id="@+id/button_add_expense"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom|end"
+    android:layout_marginEnd="@dimen/fab_margin"
+    android:layout_marginBottom="@dimen/button_add_expense_bottom_margin"
+    android:background="#EC5B22"
+    android:backgroundTint="#EC5B22"
+    android:src="@drawable/icon_minus"
+    app:borderWidth="0dp"
+    app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior" />
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

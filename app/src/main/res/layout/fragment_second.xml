@@ -1,27 +1,498 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
+  android:background="#FCFCFC"
+  android:orientation="vertical"
+  android:paddingTop="48dp"
   tools:context=".fragments.SecondFragment">
 
-  <TextView
-    android:id="@+id/textview_second"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    app:layout_constraintBottom_toTopOf="@id/button_second"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent" />
 
-  <Button
-    android:id="@+id/button_second"
-    android:layout_width="wrap_content"
+  <!--  Top back arrow and title-->
+  <LinearLayout
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:text="@string/previous"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@id/textview_second" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+    android:background="#FFFFFF"
+    android:orientation="horizontal"
+    android:paddingTop="@dimen/margin_medium"
+    android:paddingBottom="@dimen/margin_medium">
+
+    <!--    Back arrow-->
+    <LinearLayout
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_gravity="left|center"
+      android:layout_weight="1"
+      android:gravity="left|center">
+
+      <ImageView
+        android:layout_width="@dimen/back_arrow_top"
+        android:layout_height="@dimen/back_arrow_top"
+        android:layout_marginLeft="@dimen/margin_left_back_arrow_top"
+        android:src="@drawable/icon_left_arrow" />
+    </LinearLayout>
+
+    <!--    Title-->
+    <LinearLayout
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center|center_vertical"
+      android:layout_weight="1"
+      android:gravity="center|center_vertical">
+
+      <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add Expense"
+        android:textColor="#000000"
+        android:textSize="@dimen/textsize_title"
+        android:textStyle="bold" />
+    </LinearLayout>
+
+    <!--    Empty-->
+    <LinearLayout
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_weight="1">
+
+    </LinearLayout>
+  </LinearLayout>
+
+
+  <View
+    android:layout_width="match_parent"
+    android:layout_height="8dp"
+    android:background="@drawable/gradient_bar_light" />
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ScrollView
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:layout_weight="1"
+      android:fillViewport="true">
+
+      <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:background="#FCFCFC"
+          android:gravity="center_horizontal|bottom"
+          android:orientation="vertical"
+          android:paddingLeft="@dimen/padding_sides_normal"
+          android:paddingTop="2px"
+          android:paddingRight="@dimen/padding_sides_normal"
+          android:paddingBottom="64dp">
+
+
+          <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/layout_gap_medium" />
+          <!--          Amount text and data-->
+          <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="Amount"
+              android:textColor="#000000"
+              android:textSize="@dimen/textsize_title"
+              android:textStyle="bold" />
+
+            <LinearLayout
+              android:id="@+id/linearlayout_add_transaction_amount"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@drawable/shape_layout_border_radius"
+              android:orientation="horizontal"
+              android:paddingLeft="@dimen/padding_sides_normal"
+              android:paddingRight="@dimen/padding_sides_normal">
+
+              <EditText
+                android:id="@+id/edittext_add_transaction_amount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padding_sides_normal"
+                android:layout_marginBottom="@dimen/padding_sides_normal"
+                android:background="@null"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:paddingRight="@dimen/margin_medium"
+                android:scrollHorizontally="true"
+                android:singleLine="true"
+                android:text="1300"
+                android:textColor="@color/color_expense"
+                android:textSize="44dp"
+                android:textStyle="bold" />
+
+              <TextView
+                android:id="@+id/textview_add_transaction_amount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padding_sides_normal"
+                android:layout_marginBottom="@dimen/padding_sides_normal"
+                android:text="$"
+                android:textColor="@color/color_expense"
+                android:textSize="44dp"
+                android:textStyle="bold" />
+            </LinearLayout>
+          </LinearLayout>
+
+          <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/layout_gap_medium" />
+          <!--          Category text and data-->
+          <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="Category"
+              android:textColor="#000000"
+              android:textSize="@dimen/textsize_title"
+              android:textStyle="bold" />
+
+
+            <LinearLayout
+              android:id="@+id/linearlayout_add_transaction_category"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@drawable/shape_layout_border_radius"
+              android:orientation="horizontal"
+              android:paddingLeft="@dimen/padding_sides_normal"
+              android:paddingRight="@dimen/padding_sides_normal">
+
+
+              <TextView
+                android:id="@+id/edittext_add_transaction_category"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:paddingTop="@dimen/padding_sides_normal"
+                android:paddingRight="@dimen/margin_medium"
+                android:paddingBottom="@dimen/padding_sides_normal"
+                android:scrollHorizontally="true"
+                android:singleLine="true"
+                android:text="Foods"
+                android:textColor="@color/black"
+                android:textFontWeight="500"
+                android:textSize="@dimen/textsize_title" />
+
+              <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="right|center">
+
+                <ImageView
+                  android:layout_width="48dp"
+                  android:layout_height="48dp"
+                  android:layout_margin="@dimen/padding_sides_normal"
+                  android:paddingTop="@dimen/padding_sides_small"
+                  android:paddingBottom="@dimen/padding_sides_small"
+                  android:src="@drawable/foods" />
+
+
+                <ImageView
+                  android:layout_width="48dp"
+                  android:layout_height="48dp"
+                  android:padding="@dimen/padding_sides_small"
+                  android:src="@drawable/arrow_down_icon" />
+              </LinearLayout>
+
+
+            </LinearLayout>
+          </LinearLayout>
+
+          <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/layout_gap_medium" />
+          <!--          Description text and data-->
+          <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="Description"
+              android:textColor="#000000"
+              android:textSize="@dimen/textsize_title"
+              android:textStyle="bold" />
+
+
+            <LinearLayout
+              android:id="@+id/linearlayout_add_transaction_description"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@drawable/shape_layout_border_radius"
+              android:orientation="horizontal"
+              android:paddingLeft="@dimen/padding_sides_normal"
+              android:paddingRight="@dimen/padding_sides_normal">
+
+
+              <EditText
+                android:id="@+id/edittext_add_transaction_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:hint="Add more details here..."
+                android:maxLines="4"
+                android:paddingTop="@dimen/padding_sides_normal"
+                android:paddingRight="@dimen/margin_medium"
+                android:paddingBottom="@dimen/padding_sides_normal"
+                android:scrollbars="vertical"
+                android:scrollHorizontally="true"
+                android:textColor="@color/black"
+                android:textFontWeight="500"
+                android:textSize="@dimen/textsize_title" />
+
+
+            </LinearLayout>
+          </LinearLayout>
+
+          <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/layout_gap_medium" />
+          <!--          Category text and data-->
+          <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="Date"
+              android:textColor="#000000"
+              android:textSize="@dimen/textsize_title"
+              android:textStyle="bold" />
+
+
+            <LinearLayout
+              android:id="@+id/linearlayout_add_transaction_date"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@drawable/shape_layout_border_radius"
+              android:orientation="horizontal"
+              android:paddingLeft="@dimen/padding_sides_normal"
+              android:paddingRight="@dimen/padding_sides_normal">
+
+
+              <TextView
+                android:id="@+id/textview_add_transaction_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:paddingTop="@dimen/padding_sides_normal"
+                android:paddingRight="@dimen/margin_medium"
+                android:paddingBottom="@dimen/padding_sides_normal"
+                android:scrollHorizontally="true"
+                android:singleLine="true"
+                android:text="19 Apr 2022, "
+                android:textColor="@color/black"
+                android:textFontWeight="500"
+                android:textSize="@dimen/textsize_title" />
+
+              <TextView
+                android:id="@+id/textview_add_transaction_day"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:paddingTop="@dimen/padding_sides_normal"
+                android:paddingRight="@dimen/margin_medium"
+                android:paddingBottom="@dimen/padding_sides_normal"
+                android:scrollHorizontally="true"
+                android:singleLine="true"
+                android:text="Tuesday"
+                android:textColor="#999999"
+                android:textSize="@dimen/textsize_title" />
+
+              <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="right|center">
+
+                <ImageView
+                  android:layout_width="48dp"
+                  android:layout_height="48dp"
+                  android:padding="@dimen/padding_sides_small"
+                  android:src="@drawable/icon_calendar" />
+              </LinearLayout>
+
+
+            </LinearLayout>
+          </LinearLayout>
+
+          <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/layout_gap_medium" />
+          <!--          Payment mode text and data-->
+          <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="Payment Mode"
+              android:textColor="#000000"
+              android:textSize="@dimen/textsize_title"
+              android:textStyle="bold" />
+
+
+            <LinearLayout
+              android:id="@+id/linearlayout_add_transaction_payment"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@drawable/shape_layout_border_radius"
+              android:orientation="horizontal"
+              android:paddingLeft="@dimen/padding_sides_normal"
+              android:paddingRight="@dimen/padding_sides_normal">
+
+
+              <TextView
+                android:id="@+id/textview_add_transaction_payment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:paddingTop="@dimen/padding_sides_normal"
+                android:paddingRight="@dimen/margin_medium"
+                android:paddingBottom="@dimen/padding_sides_normal"
+                android:scrollHorizontally="true"
+                android:singleLine="true"
+                android:text="HDFC 6021"
+                android:textColor="@color/black"
+                android:textFontWeight="500"
+                android:textSize="@dimen/textsize_title" />
+
+              <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="right|center">
+
+                <ImageView
+                  android:layout_width="48dp"
+                  android:layout_height="48dp"
+                  android:padding="@dimen/padding_sides_small"
+                  android:src="@drawable/arrow_down_icon" />
+              </LinearLayout>
+
+
+            </LinearLayout>
+          </LinearLayout>
+
+          <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/layout_gap_medium" />
+          <!--          Photo and data-->
+          <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="Photos or documents"
+              android:textColor="#000000"
+              android:textSize="@dimen/textsize_title"
+              android:textStyle="bold" />
+
+
+            <LinearLayout
+              android:id="@+id/linearlayout_add_transaction_photo"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@drawable/shape_layout_border_radius"
+              android:gravity="center"
+              android:orientation="horizontal"
+              android:paddingLeft="@dimen/padding_sides_normal"
+              android:paddingRight="@dimen/padding_sides_normal">
+
+
+              <ImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:src="@drawable/icon_camera_photo" />
+
+              <ImageView
+                android:layout_width="48dp"
+                android:layout_height="40dp"
+                android:src="@drawable/icon_pdf" />
+
+              <ImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:src="@drawable/icon_camera_photo" />
+
+              <ImageView
+                android:layout_width="48dp"
+                android:layout_height="40dp"
+                android:src="@drawable/icon_pdf" />
+
+              <TextView
+                android:id="@+id/textview_add_transaction_photo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:paddingLeft="@dimen/margin_medium"
+                android:paddingTop="@dimen/padding_sides_normal"
+                android:paddingRight="@dimen/margin_medium"
+                android:paddingBottom="@dimen/padding_sides_normal"
+                android:scrollHorizontally="true"
+                android:singleLine="true"
+                android:text="+3"
+                android:textColor="@color/black"
+                android:textFontWeight="500"
+                android:textSize="@dimen/textsize_title" />
+
+              <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="right|center">
+
+                <ImageView
+                  android:layout_width="48dp"
+                  android:layout_height="48dp"
+                  android:padding="@dimen/padding_sides_small"
+                  android:src="@drawable/add_new_transaction" />
+              </LinearLayout>
+
+
+            </LinearLayout>
+          </LinearLayout>
+
+        </LinearLayout>
+      </RelativeLayout>
+    </ScrollView>
+  </LinearLayout>
+
+
+</LinearLayout>
