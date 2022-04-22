@@ -119,7 +119,7 @@ public class SecondFragment extends Fragment {
     LinearLayout linearLayoutBox = viewCategoryDialog.findViewById(R.id.dialog_category_picker_linear_layout_box);
 
 
-    int totalCategories = 20;
+    int totalCategories = 14;
     List<CategoryType> categories = getDummyCategories(totalCategories);
 
     int totalRows = (int) Math.ceil(totalCategories / (float) CATEGORIES_PER_ROW);
