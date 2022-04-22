@@ -145,12 +145,16 @@ public class SecondFragment extends Fragment {
         Toast.makeText(getContext(), "Selected category : " + view.getTag(), Toast.LENGTH_SHORT).show();
       }
     };
+
+
     binding.linearlayoutAddTransactionCategory.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
         categoryDialog.show();
       }
     });
+
+
     //ToDo : Currently the cursor on clicking the Layout after edittext doesn't bring it to end of edittext, do it
     binding.linearlayoutAddTransactionAmount.setOnClickListener(new View.OnClickListener() {
       @Override
@@ -160,12 +164,16 @@ public class SecondFragment extends Fragment {
         imm.showSoftInput(binding.edittextAddTransactionAmount, 0);
       }
     });
+
+
     binding.linearlayoutAddTransactionDate.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
         calendarDialog.show();
       }
     });
+
+
     binding.linearlayoutAddTransactionPayment.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
