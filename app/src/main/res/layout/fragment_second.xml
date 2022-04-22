@@ -6,7 +6,7 @@
   android:layout_height="match_parent"
   android:background="#FCFCFC"
   android:orientation="vertical"
-  android:paddingTop="48dp"
+  android:paddingTop="32dp"
   tools:context=".fragments.SecondFragment">
 
 
@@ -120,22 +120,29 @@
               android:paddingLeft="@dimen/padding_sides_normal"
               android:paddingRight="@dimen/padding_sides_normal">
 
-              <EditText
-                android:id="@+id/edittext_add_transaction_amount"
+              <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/padding_sides_normal"
-                android:layout_marginBottom="@dimen/padding_sides_normal"
-                android:background="@null"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:paddingRight="@dimen/margin_medium"
-                android:scrollHorizontally="true"
-                android:singleLine="true"
-                android:text="1300"
-                android:textColor="@color/color_expense"
-                android:textSize="44dp"
-                android:textStyle="bold" />
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <EditText
+                  android:id="@+id/edittext_add_transaction_amount"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_marginTop="@dimen/padding_sides_normal"
+                  android:layout_marginBottom="@dimen/padding_sides_normal"
+                  android:background="@null"
+                  android:ellipsize="end"
+                  android:maxLines="1"
+                  android:paddingRight="@dimen/margin_medium"
+                  android:scrollHorizontally="true"
+                  android:singleLine="true"
+                  android:text="1300"
+                  android:textColor="@color/color_expense"
+                  android:textSize="44dp"
+                  android:textStyle="bold" />
+              </LinearLayout>
+
 
               <TextView
                 android:id="@+id/textview_add_transaction_amount"
@@ -147,6 +154,57 @@
                 android:textColor="@color/color_expense"
                 android:textSize="44dp"
                 android:textStyle="bold" />
+            </LinearLayout>
+          </LinearLayout>
+
+
+          <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/layout_gap_medium" />
+          <!--          Description text and data-->
+          <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="Description"
+              android:textColor="#000000"
+              android:textSize="@dimen/textsize_title"
+              android:textStyle="bold" />
+
+
+            <LinearLayout
+              android:id="@+id/linearlayout_add_transaction_description"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@drawable/shape_layout_border_radius"
+              android:orientation="horizontal"
+              android:paddingLeft="@dimen/padding_sides_normal"
+              android:paddingRight="@dimen/padding_sides_normal">
+
+
+              <EditText
+                android:id="@+id/edittext_add_transaction_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:ellipsize="end"
+                android:hint="Add more details here..."
+                android:maxLines="4"
+                android:paddingTop="@dimen/padding_sides_normal"
+                android:paddingRight="@dimen/margin_medium"
+                android:paddingBottom="@dimen/padding_sides_normal"
+                android:scrollbars="none"
+                android:scrollHorizontally="true"
+                android:singleLine="true"
+                android:textColor="@color/black"
+                android:textFontWeight="500"
+                android:textSize="@dimen/textsize_title" />
+
+
             </LinearLayout>
           </LinearLayout>
 
@@ -210,6 +268,7 @@
 
 
                 <ImageView
+                  android:id="@+id/imageview_add_transaction_category"
                   android:layout_width="48dp"
                   android:layout_height="48dp"
                   android:padding="@dimen/padding_sides_small"
@@ -223,54 +282,8 @@
           <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/layout_gap_medium" />
-          <!--          Description text and data-->
-          <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:text="Description"
-              android:textColor="#000000"
-              android:textSize="@dimen/textsize_title"
-              android:textStyle="bold" />
 
 
-            <LinearLayout
-              android:id="@+id/linearlayout_add_transaction_description"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:background="@drawable/shape_layout_border_radius"
-              android:orientation="horizontal"
-              android:paddingLeft="@dimen/padding_sides_normal"
-              android:paddingRight="@dimen/padding_sides_normal">
-
-
-              <EditText
-                android:id="@+id/edittext_add_transaction_description"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@null"
-                android:hint="Add more details here..."
-                android:maxLines="4"
-                android:paddingTop="@dimen/padding_sides_normal"
-                android:paddingRight="@dimen/margin_medium"
-                android:paddingBottom="@dimen/padding_sides_normal"
-                android:scrollbars="vertical"
-                android:scrollHorizontally="true"
-                android:textColor="@color/black"
-                android:textFontWeight="500"
-                android:textSize="@dimen/textsize_title" />
-
-
-            </LinearLayout>
-          </LinearLayout>
-
-          <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/layout_gap_medium" />
           <!--          Category text and data-->
           <LinearLayout
             android:layout_width="match_parent"
@@ -335,6 +348,7 @@
                 android:gravity="right|center">
 
                 <ImageView
+                  android:id="@+id/button_add_transaction_amount_date"
                   android:layout_width="48dp"
                   android:layout_height="48dp"
                   android:padding="@dimen/padding_sides_small"
@@ -488,6 +502,23 @@
 
             </LinearLayout>
           </LinearLayout>
+
+          <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/layout_gap_medium" />
+
+          <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shape_button_add_expense"
+            android:gravity="center"
+            android:paddingTop="@dimen/padding_sides_small"
+            android:paddingBottom="@dimen/padding_sides_small"
+            android:tag="Add Button"
+            android:text="Add"
+            android:textColor="#FFFFFF"
+            android:textSize="@dimen/textsize_title"
+            android:textStyle="bold" />
 
         </LinearLayout>
       </RelativeLayout>
