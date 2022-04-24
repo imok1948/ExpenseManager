@@ -418,6 +418,8 @@
               </LinearLayout>
 
 
+
+
             </LinearLayout>
           </LinearLayout>
 
@@ -509,6 +511,7 @@
             android:layout_height="@dimen/layout_gap_medium" />
 
           <TextView
+            android:id="@+id/textview_add_expense_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/shape_button_add_expense"

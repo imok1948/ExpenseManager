@@ -14,7 +14,8 @@
         <entry key="app/src/main/res/layout/add_activity_dialog_row.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/add_expense_dialog_category.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/content_main.xml" value="0.35625" />
-        <entry key="app/src/main/res/layout/dialog_category_picker.xml" value="0.5" />
+        <entry key="app/src/main/res/layout/dialog_category_picker.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/dialog_payment_mode.xml" value="0.5" />
         <entry key="app/src/main/res/layout/dialog_select_date.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_first.xml" value="0.9715909090909091" />
         <entry key="app/src/main/res/layout/fragment_second.xml" value="0.33" />

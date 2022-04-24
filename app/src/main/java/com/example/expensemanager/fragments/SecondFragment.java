@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -18,7 +19,9 @@ import androidx.fragment.app.Fragment;
 
 import com.example.expensemanager.R;
 import com.example.expensemanager.databinding.FragmentSecondBinding;
+import com.example.expensemanager.utils.Account;
 import com.example.expensemanager.utils.CategoryType;
+import com.example.expensemanager.utils.ExpenseModel;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.Calendar;
@@ -37,12 +40,16 @@ public class SecondFragment extends Fragment {
   private LinearLayout viewOfAddExpenseDialogRow;
   private View.OnClickListener dialogButtonClickListener;
 
+  private ExpenseModel expenseModel;
+
+
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     binding = FragmentSecondBinding.inflate(inflater, container, false);
     rootView = binding.getRoot();
     return rootView;
   }
+
 
   public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
@@ -100,6 +107,9 @@ public class SecondFragment extends Fragment {
     datePicker.init(defaultCalendar.get(Calendar.YEAR), defaultCalendar.get(Calendar.MONTH), defaultCalendar.get(Calendar.DAY_OF_MONTH), new DatePicker.OnDateChangedListener() {
       @Override
       public void onDateChanged(DatePicker datePicker1, int year, int month, int dayOfMonth) {
+        expenseModel.getCalendar().set(Calendar.YEAR, year);
+        expenseModel.getCalendar().set(Calendar.MONTH, month);
+        expenseModel.getCalendar().set(Calendar.DATE, dayOfMonth);
         setExpenseDate(year, month, dayOfMonth);
         calendarDialog.dismiss();
       }
@@ -116,12 +126,14 @@ public class SecondFragment extends Fragment {
   }
 
   private void assignments() {
+
+    defaultCalendar = Calendar.getInstance();
+    defaultCalendar.setTimeInMillis(System.currentTimeMillis());
+    expenseModel = new ExpenseModel(0, "", new CategoryType("1", "Foods", R.drawable.foods), defaultCalendar, new Account("Expense", "HDFC 6022", "hdfc_6022"));
+
     //Initialize with their respective views
     viewOfCalendarDialog = getLayoutInflater().inflate(R.layout.dialog_select_date, null);
     viewOfCategoryDialog = getLayoutInflater().inflate(R.layout.dialog_category_picker, null);
-    defaultCalendar = Calendar.getInstance();
-    defaultCalendar.setTimeInMillis(System.currentTimeMillis());
-
   }
 
   private LinearLayout getLayoutForCategoryDialog(int id, Object tag, View.OnClickListener onClickListener, ViewGroup parent) {
@@ -134,6 +146,17 @@ public class SecondFragment extends Fragment {
     return linearLayout;
   }
 
+
+  private void updateViewFromModel() {
+    binding.edittextAddTransactionAmount.setText("" + expenseModel.getAmount());
+    binding.edittextAddTransactionDescription.setText(expenseModel.getDescription());
+    binding.edittextAddTransactionCategory.setText(expenseModel.getCategory().getName());
+    binding.imageviewAddTransactionCategory.setImageResource(expenseModel.getCategory().getImage());
+    Calendar calendar = expenseModel.getCalendar();
+    setExpenseDate(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+    binding.textviewAddTransactionPayment.setText(expenseModel.getAccount().getName());
+  }
+
   private LinearLayout getCategoryDialogRow(int viewId) {
     return (LinearLayout) getLayoutInflater().inflate(R.layout.add_activity_dialog_row, null);
   }
@@ -142,9 +165,34 @@ public class SecondFragment extends Fragment {
     dialogButtonClickListener = new View.OnClickListener() {
       @Override
       public void onClick(View view) {
+        CategoryType categoryType = (CategoryType) view.getTag();
+        expenseModel.setCategory(categoryType);
+        categoryDialog.dismiss();
         Toast.makeText(getContext(), "Selected category : " + view.getTag(), Toast.LENGTH_SHORT).show();
       }
     };
+
+
+    binding.edittextAddTransactionAmount.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+      @Override
+      public void onFocusChange(View view, boolean focusGain) {
+        if (!focusGain) {
+          String amount = ((EditText) view).getText() + "";
+          expenseModel.setAmount(Float.parseFloat(amount));
+        }
+      }
+    });
+
+    binding.edittextAddTransactionDescription.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+      @Override
+      public void onFocusChange(View view, boolean focusGain) {
+        if (!focusGain) {
+
+          String description = ((EditText) view).getText() + "";
+          expenseModel.setDescription(description);
+        }
+      }
+    });
 
 
     binding.linearlayoutAddTransactionCategory.setOnClickListener(new View.OnClickListener() {
@@ -178,6 +226,14 @@ public class SecondFragment extends Fragment {
       @Override
       public void onClick(View view) {
         Snackbar.make(rootView, "I will show you available accounts", Snackbar.LENGTH_SHORT).show();
+      }
+    });
+
+    binding.textviewAddExpenseButton.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        expenseModel.setAmount(Float.parseFloat(binding.edittextAddTransactionAmount.getText() + ""));
+        Toast.makeText(getContext(), expenseModel + "", Toast.LENGTH_LONG).show();
       }
     });
   }
