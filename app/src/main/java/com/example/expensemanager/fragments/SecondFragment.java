@@ -4,6 +4,10 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +36,7 @@ import java.util.List;
 public class SecondFragment extends Fragment {
 
   private static final int CATEGORIES_PER_ROW = 4;
+  private static final String TAG = Fragment.class.toString();
   private FragmentSecondBinding binding;
   private View rootView;
   private Calendar defaultCalendar;
@@ -49,12 +54,12 @@ public class SecondFragment extends Fragment {
     return rootView;
   }
 
-
   public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
     assignments();
     setupListeners();
     initiate();
+    updateViewFromModel();
   }
 
   @Override
@@ -84,7 +89,7 @@ public class SecondFragment extends Fragment {
   private void assignments() {
     defaultCalendar = Calendar.getInstance();
     defaultCalendar.setTimeInMillis(System.currentTimeMillis());
-    expenseModel = new ExpenseModel(0, "", new CategoryType("1", "Foods", R.drawable.foods), defaultCalendar, new Account("HDFC 6022", "hdfc_6022"));
+    expenseModel = new ExpenseModel(198F, "", new CategoryType("1", "Foods", R.drawable.foods), defaultCalendar, new Account("HDFC 6022", "hdfc_6022"));
 
     //Initialize with their respective views
     viewOfCalendarDialog = getLayoutInflater().inflate(R.layout.dialog_select_date, null);
@@ -104,14 +109,20 @@ public class SecondFragment extends Fragment {
       }
     });
 
-    binding.edittextAddTransactionDescription.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-      @Override
-      public void onFocusChange(View view, boolean focusGain) {
-        if (!focusGain) {
 
-          String description = ((EditText) view).getText() + "";
-          expenseModel.setDescription(description);
-        }
+    binding.edittextAddTransactionDescription.addTextChangedListener(new TextWatcher() {
+      @Override
+      public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+      }
+
+      @Override
+      public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        expenseModel.setDescription(charSequence + "");
+      }
+
+      @Override
+      public void afterTextChanged(Editable editable) {
       }
     });
 
@@ -124,13 +135,15 @@ public class SecondFragment extends Fragment {
     });
 
 
-    //ToDo : Currently the cursor on clicking the Layout after edittext doesn't bring it to end of edittext, do it
     binding.linearlayoutAddTransactionAmount.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
         binding.edittextAddTransactionAmount.requestFocus();
         InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.showSoftInput(binding.edittextAddTransactionAmount, 0);
+
+        //ToDo : Move the cursor to left of decimal point if there any
+        binding.edittextAddTransactionAmount.setSelection(binding.edittextAddTransactionAmount.getText().length());
       }
     });
 
@@ -161,7 +174,13 @@ public class SecondFragment extends Fragment {
   }
 
   private void updateViewFromModel() {
-    binding.edittextAddTransactionAmount.setText("" + expenseModel.getAmount());
+
+    float remainingValue = expenseModel.getAmount() - (int) expenseModel.getAmount();
+    if (remainingValue != 0) {
+      binding.edittextAddTransactionAmount.setText(expenseModel.getAmount() + "");
+    } else {
+      binding.edittextAddTransactionAmount.setText((int) expenseModel.getAmount() + "");
+    }
     binding.edittextAddTransactionDescription.setText(expenseModel.getDescription());
     binding.edittextAddTransactionCategory.setText(expenseModel.getCategory().getName());
     binding.imageviewAddTransactionCategory.setImageResource(expenseModel.getCategory().getImage());
@@ -172,12 +191,14 @@ public class SecondFragment extends Fragment {
 
   private void setExpenseDate(Calendar calendar) {
     //Month is 0 based
+    String[] weekdays = "Sunday Monday Tuesday Wednesday Thursday Friday Saturday".split(" ");
     String[] monthStrings = new String[]{"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
     int year, month, dayOfMonth;
     year = calendar.get(Calendar.YEAR);
     month = calendar.get(Calendar.MONTH);
     dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
     binding.textviewAddTransactionDate.setText(dayOfMonth + " " + monthStrings[month] + " " + year + ",");
+    binding.textviewAddTransactionDay.setText(weekdays[calendar.get(Calendar.DAY_OF_WEEK) - 1]);
   }
 
   private void createCategoryDialog() {
@@ -258,7 +279,7 @@ public class SecondFragment extends Fragment {
         Account account = (Account) view.getTag();
         expenseModel.setAccount(account);
         paymentModeDialog.dismiss();
-        Toast.makeText(getContext(), "Selected account : " + view.getTag(), Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getContext(), "Selected account : " + view.getTag(), Toast.LENGTH_SHORT).show();
       }
     };
     LinearLayout linearLayout = (LinearLayout) getLayoutInflater().inflate(R.layout.row_add_expense_select_account, null);
@@ -275,7 +296,7 @@ public class SecondFragment extends Fragment {
         CategoryType categoryType = (CategoryType) view.getTag();
         expenseModel.setCategory(categoryType);
         categoryDialog.dismiss();
-        Toast.makeText(getContext(), "Selected category : " + view.getTag(), Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getContext(), "Selected category : " + view.getTag(), Toast.LENGTH_SHORT).show();
       }
     };
     LinearLayout linearLayout = (LinearLayout) getLayoutInflater().inflate(R.layout.add_expense_dialog_category, parent, false);
