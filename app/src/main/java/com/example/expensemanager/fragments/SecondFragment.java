@@ -3,11 +3,11 @@ package com.example.expensemanager.fragments;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,16 +20,21 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.expensemanager.R;
 import com.example.expensemanager.databinding.FragmentSecondBinding;
 import com.example.expensemanager.utils.Account;
 import com.example.expensemanager.utils.CategoryType;
 import com.example.expensemanager.utils.ExpenseModel;
+import com.example.expensemanager.utils.ExpensePhoto;
 
+import org.json.JSONArray;
+
+import java.net.URI;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -37,12 +42,16 @@ public class SecondFragment extends Fragment {
 
   private static final int CATEGORIES_PER_ROW = 4;
   private static final String TAG = Fragment.class.toString();
+  private static final int SELECT_IMAGE_FROM_GALLERY_CODE = 101;
+  private static final int EXPENSE_IMAGES_TO_BE_SHOWN_IN_LINEAR_LAYOUT = 4;
   private FragmentSecondBinding binding;
   private View rootView;
   private Calendar defaultCalendar;
   private View viewOfCalendarDialog, viewOfCategoryDialog, viewOfPaymentDialog;
   private AlertDialog calendarDialog, categoryDialog, paymentModeDialog;
   private LinearLayout viewOfAddExpenseDialogRow;
+
+  private List<URI> imageUriList;
 
   private ExpenseModel expenseModel;
 
@@ -87,14 +96,52 @@ public class SecondFragment extends Fragment {
   //Done and working fine
 
   private void assignments() {
+    imageUriList = new LinkedList<>();
     defaultCalendar = Calendar.getInstance();
     defaultCalendar.setTimeInMillis(System.currentTimeMillis());
-    expenseModel = new ExpenseModel(198F, "", new CategoryType("1", "Foods", R.drawable.foods), defaultCalendar, new Account("HDFC 6022", "hdfc_6022"));
+    expenseModel = new ExpenseModel(198F, "", new CategoryType("1", "Foods", R.drawable.foods), defaultCalendar, new Account("HDFC 6022", "hdfc_6022"), new HashMap<>());
 
     //Initialize with their respective views
     viewOfCalendarDialog = getLayoutInflater().inflate(R.layout.dialog_select_date, null);
     viewOfCategoryDialog = getLayoutInflater().inflate(R.layout.dialog_category_picker, null);
     viewOfPaymentDialog = getLayoutInflater().inflate(R.layout.dialog_payment_mode, null);
+  }
+
+  @Override
+  public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    super.onActivityResult(requestCode, resultCode, data);
+    if (requestCode == SELECT_IMAGE_FROM_GALLERY_CODE) {
+      Uri uri = data.getData();
+      ExpensePhoto expensePhoto = new ExpensePhoto(uri, uri, uri.toString());
+      binding.linearlayoutAddTransactionPhoto.addView(getImageViewOfTransactionPhoto(expensePhoto, binding.linearlayoutAddTransactionPhoto));
+
+    }
+  }
+
+  private ImageView getImageViewOfTransactionPhoto(ExpensePhoto expensePhoto, ViewGroup linearlayoutAddTransactionPhoto) {
+    ImageView imageView = (ImageView) getLayoutInflater().inflate(R.layout.element_imageview_add_transaction_photo, linearlayoutAddTransactionPhoto, false);
+    imageView.setImageURI(expensePhoto.getImageUri());
+
+    imageView.setImageURI(expensePhoto.getThumbnailURI());
+    imageView.setTag(expensePhoto);
+
+    expenseModel.getExpensePhotosHashMap().put(expensePhoto.getImageId(), expensePhoto);
+    //TODO : Save this image file in sdcard
+    //TODO : Resize image
+    //TODO : Generate unique hash as image id
+
+    imageView.setOnLongClickListener(new View.OnLongClickListener() {
+      @Override
+      public boolean onLongClick(View view) {
+        ExpensePhoto expensePhotoTag = (ExpensePhoto) view.getTag();
+        Toast.makeText(getContext(), "Removing photo => " + expensePhotoTag.getImageId(), Toast.LENGTH_SHORT).show();
+        expenseModel.getExpensePhotosHashMap().remove(expensePhotoTag.getImageId());
+        linearlayoutAddTransactionPhoto.removeView(view);
+
+        return true;
+      }
+    });
+    return imageView;
   }
 
   private void setupListeners() {
@@ -171,6 +218,19 @@ public class SecondFragment extends Fragment {
         Toast.makeText(getContext(), expenseModel + "", Toast.LENGTH_LONG).show();
       }
     });
+
+
+    binding.buttonAddExpenseAddPicture.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "This is tilte"), SELECT_IMAGE_FROM_GALLERY_CODE);
+      }
+    });
+
+
   }
 
   private void updateViewFromModel() {

@@ -442,7 +442,6 @@
 
 
             <LinearLayout
-              android:id="@+id/linearlayout_add_transaction_photo"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:background="@drawable/shape_layout_border_radius"
@@ -451,29 +450,16 @@
               android:paddingLeft="@dimen/padding_sides_normal"
               android:paddingRight="@dimen/padding_sides_normal">
 
+              <LinearLayout
+                android:id="@+id/linearlayout_add_transaction_photo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
-              <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:src="@drawable/icon_camera_photo" />
-
-              <ImageView
-                android:layout_width="48dp"
-                android:layout_height="40dp"
-                android:src="@drawable/icon_pdf" />
-
-              <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:src="@drawable/icon_camera_photo" />
-
-              <ImageView
-                android:layout_width="48dp"
-                android:layout_height="40dp"
-                android:src="@drawable/icon_pdf" />
+              </LinearLayout>
 
               <TextView
-                android:id="@+id/textview_add_transaction_photo"
+                android:id="@+id/textview_add_transaction_photo_more_are_there"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@null"
@@ -496,6 +482,7 @@
                 android:gravity="right|center">
 
                 <ImageView
+                  android:id="@+id/button_add_expense_add_picture"
                   android:layout_width="48dp"
                   android:layout_height="48dp"
                   android:padding="@dimen/padding_sides_small"

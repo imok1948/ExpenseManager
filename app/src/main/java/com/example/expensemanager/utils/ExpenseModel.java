@@ -1,5 +1,6 @@
 package com.example.expensemanager.utils;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -9,15 +10,15 @@ public class ExpenseModel {
   private CategoryType category;
   private Calendar calendar;
   private Account account;
-  private List<ExpensePhotos> photos;
+  private HashMap<String, ExpensePhoto> expensePhotosHashMap;
 
-  public ExpenseModel(float amount, String description, CategoryType category, Calendar calendar, Account account, List<ExpensePhotos> photos) {
+  public ExpenseModel(float amount, String description, CategoryType category, Calendar calendar, Account account, HashMap<String, ExpensePhoto> expensePhotosHashMap) {
     this.amount = amount;
     this.description = description;
     this.category = category;
     this.calendar = calendar;
     this.account = account;
-    this.photos = photos;
+    this.expensePhotosHashMap = expensePhotosHashMap;
   }
 
   public ExpenseModel(float amount, String description, CategoryType category, Calendar calendar, Account account) {
@@ -33,13 +34,21 @@ public class ExpenseModel {
     description = "";
     category = null;
     account = null;
-    photos = new LinkedList<>();
+    expensePhotosHashMap = new HashMap<>();
   }
 
   @Override
   public String toString() {
-    String[] monthStrings = new String[]{"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
-    return "ExpenseModel{" + "amount=" + amount + "\t\n description='" + description + "'" + "\t\n category=" + category.getName() + "\t\n calendar=(" + calendar.get(Calendar.DATE) + " " + monthStrings[calendar.get(Calendar.MONTH)] + " " + calendar.get(Calendar.YEAR) + ")\t\n account=" + account.getName() + "\t\n photos=" + photos + '}';
+    return "ExpenseModel{" + "amount=" + amount + "\t\n description='" + description + "'" + "\t\n category=" + category + "\t\n calendar=" + calendar + "\t\n account=" + account + "\t\n expensePhotosHashMap=" + expensePhotosHashMap + '}';
+  }
+
+
+  public HashMap<String, ExpensePhoto> getExpensePhotosHashMap() {
+    return expensePhotosHashMap;
+  }
+
+  public void setExpensePhotosHashMap(HashMap<String, ExpensePhoto> expensePhotosHashMap) {
+    this.expensePhotosHashMap = expensePhotosHashMap;
   }
 
   public float getAmount() {
@@ -82,11 +91,5 @@ public class ExpenseModel {
     this.account = account;
   }
 
-  public List<ExpensePhotos> getPhotos() {
-    return photos;
-  }
 
-  public void setPhotos(List<ExpensePhotos> photos) {
-    this.photos = photos;
-  }
 }
