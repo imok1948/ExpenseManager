@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string-array name="payment_mode_values" />
+  <item name="hdfc_6021" type="string">HDFC 6021</item>
+  <item name="kotak_22231" type="string">KOTAK 22231</item>
+  <item name="sbi_50100" type="string">SBI 50100</item>
+</resources>

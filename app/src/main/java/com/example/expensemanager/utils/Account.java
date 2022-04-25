@@ -1,20 +1,15 @@
 package com.example.expensemanager.utils;
 public class Account {
-  private String type, name, id;
+  public static final int EXPENSE = 1;
+  private String name, id;
+  private float balance;
+  //Also add currency type, description
 
-  public Account(String type, String name, String id) {
-    this.type = type;
+  public Account(String name, String id) {
     this.name = name;
     this.id = id;
   }
 
-  public String getType() {
-    return type;
-  }
-
-  public void setType(String type) {
-    this.type = type;
-  }
 
   public String getName() {
     return name;
@@ -34,6 +29,6 @@ public class Account {
 
   @Override
   public String toString() {
-    return "com.example.expensemanager.utils.Account{" + "type='" + type + "'" + "\t\n name='" + name + "'" + "\t\n id='" + id + "'" + '}';
+    return "Account{" + "name='" + name + "'" + "\t\n id='" + id + "'" + '}';
   }
 }

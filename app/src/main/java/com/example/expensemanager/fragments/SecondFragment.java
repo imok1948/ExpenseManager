@@ -2,6 +2,7 @@ package com.example.expensemanager.fragments;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,13 +17,13 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.expensemanager.R;
 import com.example.expensemanager.databinding.FragmentSecondBinding;
 import com.example.expensemanager.utils.Account;
 import com.example.expensemanager.utils.CategoryType;
 import com.example.expensemanager.utils.ExpenseModel;
-import com.google.android.material.snackbar.Snackbar;
 
 import java.util.Calendar;
 import java.util.LinkedList;
@@ -34,11 +35,9 @@ public class SecondFragment extends Fragment {
   private FragmentSecondBinding binding;
   private View rootView;
   private Calendar defaultCalendar;
-  private View viewOfCalendarDialog;
-  private AlertDialog calendarDialog, categoryDialog;
-  private View viewOfCategoryDialog;
+  private View viewOfCalendarDialog, viewOfCategoryDialog, viewOfPaymentDialog;
+  private AlertDialog calendarDialog, categoryDialog, paymentModeDialog;
   private LinearLayout viewOfAddExpenseDialogRow;
-  private View.OnClickListener dialogButtonClickListener;
 
   private ExpenseModel expenseModel;
 
@@ -77,101 +76,23 @@ public class SecondFragment extends Fragment {
   private void initDialogs() {
     createDateDialog();
     createCategoryDialog();
+    createPaymentModeDialog();
   }
 
   //Done and working fine
-  private void createCategoryDialog() {
-    AlertDialog.Builder categoryDialogBuilder = new AlertDialog.Builder(getActivity());
-
-    //Find category box
-    LinearLayout linearLayoutBox = viewOfCategoryDialog.findViewById(R.id.dialog_category_picker_linear_layout_box);
-    int totalCategories = 14;
-    List<CategoryType> categories = getDummyCategories(totalCategories);
-    int totalRows = (int) Math.ceil(totalCategories / (float) CATEGORIES_PER_ROW);
-    for (int i = 0; i < totalRows; i++) {
-      viewOfAddExpenseDialogRow = getCategoryDialogRow(R.layout.add_activity_dialog_row);
-      for (int j = 0; j < CATEGORIES_PER_ROW && categories.size() > 0; j++) {
-        viewOfAddExpenseDialogRow.addView(getLayoutForCategoryDialog(R.layout.add_expense_dialog_category, categories.get(0), dialogButtonClickListener, viewOfAddExpenseDialogRow));
-        categories.remove(0);
-      }
-      linearLayoutBox.addView(viewOfAddExpenseDialogRow);
-    }
-    categoryDialogBuilder.setView(viewOfCategoryDialog);
-    categoryDialog = categoryDialogBuilder.create();
-  }
-
-  private void createDateDialog() {
-    AlertDialog.Builder calendarBuilder = new AlertDialog.Builder(getActivity());
-
-    DatePicker datePicker = viewOfCalendarDialog.findViewById(R.id.datepicker_add_transactions_calendar);
-    datePicker.init(defaultCalendar.get(Calendar.YEAR), defaultCalendar.get(Calendar.MONTH), defaultCalendar.get(Calendar.DAY_OF_MONTH), new DatePicker.OnDateChangedListener() {
-      @Override
-      public void onDateChanged(DatePicker datePicker1, int year, int month, int dayOfMonth) {
-        expenseModel.getCalendar().set(Calendar.YEAR, year);
-        expenseModel.getCalendar().set(Calendar.MONTH, month);
-        expenseModel.getCalendar().set(Calendar.DATE, dayOfMonth);
-        setExpenseDate(year, month, dayOfMonth);
-        calendarDialog.dismiss();
-      }
-    });
-
-    calendarBuilder.setView(viewOfCalendarDialog);
-    calendarDialog = calendarBuilder.create();
-  }
-
-  private void setExpenseDate(int year, int month, int dayOfMonth) {
-    //Month is 0 based
-    String[] monthStrings = new String[]{"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
-    binding.textviewAddTransactionDate.setText(dayOfMonth + " " + monthStrings[month] + " " + year + ",");
-  }
 
   private void assignments() {
-
     defaultCalendar = Calendar.getInstance();
     defaultCalendar.setTimeInMillis(System.currentTimeMillis());
-    expenseModel = new ExpenseModel(0, "", new CategoryType("1", "Foods", R.drawable.foods), defaultCalendar, new Account("Expense", "HDFC 6022", "hdfc_6022"));
+    expenseModel = new ExpenseModel(0, "", new CategoryType("1", "Foods", R.drawable.foods), defaultCalendar, new Account("HDFC 6022", "hdfc_6022"));
 
     //Initialize with their respective views
     viewOfCalendarDialog = getLayoutInflater().inflate(R.layout.dialog_select_date, null);
     viewOfCategoryDialog = getLayoutInflater().inflate(R.layout.dialog_category_picker, null);
-  }
-
-  private LinearLayout getLayoutForCategoryDialog(int id, Object tag, View.OnClickListener onClickListener, ViewGroup parent) {
-    CategoryType categoryType = (CategoryType) tag;
-    LinearLayout linearLayout = (LinearLayout) getLayoutInflater().inflate(id, parent, false);
-    linearLayout.setTag(tag);
-    linearLayout.setOnClickListener(onClickListener);
-    ((ImageView) linearLayout.findViewById(R.id.imageview_add_expense_dialog_category)).setImageResource(categoryType.getImage());
-    ((TextView) linearLayout.findViewById(R.id.textview_add_expense_dialog_category)).setText(categoryType.getName());
-    return linearLayout;
-  }
-
-
-  private void updateViewFromModel() {
-    binding.edittextAddTransactionAmount.setText("" + expenseModel.getAmount());
-    binding.edittextAddTransactionDescription.setText(expenseModel.getDescription());
-    binding.edittextAddTransactionCategory.setText(expenseModel.getCategory().getName());
-    binding.imageviewAddTransactionCategory.setImageResource(expenseModel.getCategory().getImage());
-    Calendar calendar = expenseModel.getCalendar();
-    setExpenseDate(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
-    binding.textviewAddTransactionPayment.setText(expenseModel.getAccount().getName());
-  }
-
-  private LinearLayout getCategoryDialogRow(int viewId) {
-    return (LinearLayout) getLayoutInflater().inflate(R.layout.add_activity_dialog_row, null);
+    viewOfPaymentDialog = getLayoutInflater().inflate(R.layout.dialog_payment_mode, null);
   }
 
   private void setupListeners() {
-    dialogButtonClickListener = new View.OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        CategoryType categoryType = (CategoryType) view.getTag();
-        expenseModel.setCategory(categoryType);
-        categoryDialog.dismiss();
-        Toast.makeText(getContext(), "Selected category : " + view.getTag(), Toast.LENGTH_SHORT).show();
-      }
-    };
-
 
     binding.edittextAddTransactionAmount.setOnFocusChangeListener(new View.OnFocusChangeListener() {
       @Override
@@ -225,7 +146,8 @@ public class SecondFragment extends Fragment {
     binding.linearlayoutAddTransactionPayment.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        Snackbar.make(rootView, "I will show you available accounts", Snackbar.LENGTH_SHORT).show();
+//        Snackbar.make(rootView, "I will show you available accounts", Snackbar.LENGTH_SHORT).show();
+        paymentModeDialog.show();
       }
     });
 
@@ -236,6 +158,148 @@ public class SecondFragment extends Fragment {
         Toast.makeText(getContext(), expenseModel + "", Toast.LENGTH_LONG).show();
       }
     });
+  }
+
+  private void updateViewFromModel() {
+    binding.edittextAddTransactionAmount.setText("" + expenseModel.getAmount());
+    binding.edittextAddTransactionDescription.setText(expenseModel.getDescription());
+    binding.edittextAddTransactionCategory.setText(expenseModel.getCategory().getName());
+    binding.imageviewAddTransactionCategory.setImageResource(expenseModel.getCategory().getImage());
+    Calendar calendar = expenseModel.getCalendar();
+    setExpenseDate(calendar);
+    binding.textviewAddTransactionPayment.setText(expenseModel.getAccount().getName());
+  }
+
+  private void setExpenseDate(Calendar calendar) {
+    //Month is 0 based
+    String[] monthStrings = new String[]{"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
+    int year, month, dayOfMonth;
+    year = calendar.get(Calendar.YEAR);
+    month = calendar.get(Calendar.MONTH);
+    dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
+    binding.textviewAddTransactionDate.setText(dayOfMonth + " " + monthStrings[month] + " " + year + ",");
+  }
+
+  private void createCategoryDialog() {
+    AlertDialog.Builder categoryDialogBuilder = new AlertDialog.Builder(getActivity());
+
+    //Find category box
+    LinearLayout linearLayoutBox = viewOfCategoryDialog.findViewById(R.id.dialog_category_picker_linear_layout_box);
+    int totalCategories = 14;
+    List<CategoryType> categories = getDummyCategories(totalCategories);
+    int totalRows = (int) Math.ceil(totalCategories / (float) CATEGORIES_PER_ROW);
+    for (int i = 0; i < totalRows; i++) {
+      viewOfAddExpenseDialogRow = getCategoryDialogRow();
+      for (int j = 0; j < CATEGORIES_PER_ROW && categories.size() > 0; j++) {
+        viewOfAddExpenseDialogRow.addView(getLayoutWithImageForCategoryDialog(categories.get(0), viewOfAddExpenseDialogRow));
+        categories.remove(0);
+      }
+      linearLayoutBox.addView(viewOfAddExpenseDialogRow);
+    }
+    categoryDialogBuilder.setView(viewOfCategoryDialog);
+    categoryDialog = categoryDialogBuilder.create();
+
+    categoryDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+      @Override
+      public void onDismiss(DialogInterface dialogInterface) {
+        updateViewFromModel();
+      }
+    });
+  }
+
+  private void createDateDialog() {
+    AlertDialog.Builder calendarBuilder = new AlertDialog.Builder(getActivity());
+
+    DatePicker datePicker = viewOfCalendarDialog.findViewById(R.id.datepicker_add_transactions_calendar);
+    datePicker.init(defaultCalendar.get(Calendar.YEAR), defaultCalendar.get(Calendar.MONTH), defaultCalendar.get(Calendar.DAY_OF_MONTH), new DatePicker.OnDateChangedListener() {
+      @Override
+      public void onDateChanged(DatePicker datePicker1, int year, int month, int dayOfMonth) {
+        expenseModel.getCalendar().set(Calendar.YEAR, year);
+        expenseModel.getCalendar().set(Calendar.MONTH, month);
+        expenseModel.getCalendar().set(Calendar.DATE, dayOfMonth);
+        calendarDialog.dismiss();
+      }
+    });
+
+    calendarBuilder.setView(viewOfCalendarDialog);
+    calendarDialog = calendarBuilder.create();
+    calendarDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+      @Override
+      public void onDismiss(DialogInterface dialogInterface) {
+        updateViewFromModel();
+      }
+    });
+  }
+
+  private void createPaymentModeDialog() {
+    AlertDialog.Builder paymentBuilder = new AlertDialog.Builder(getActivity());
+    LinearLayout linearLayoutBox = viewOfPaymentDialog.findViewById(R.id.linearlayout_box_add_expense_select_account);
+    List<Account> accountList = getDummyAccounts(5);
+
+    for (Account account : accountList) {
+      linearLayoutBox.addView(getRowForPaymentModeDialog(account));
+    }
+
+    paymentBuilder.setView(viewOfPaymentDialog);
+    paymentModeDialog = paymentBuilder.create();
+    paymentModeDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+      @Override
+      public void onDismiss(DialogInterface dialogInterface) {
+        updateViewFromModel();
+      }
+    });
+  }
+
+  private LinearLayout getRowForPaymentModeDialog(Account account) {
+
+    View.OnClickListener onClickListener = new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        Account account = (Account) view.getTag();
+        expenseModel.setAccount(account);
+        paymentModeDialog.dismiss();
+        Toast.makeText(getContext(), "Selected account : " + view.getTag(), Toast.LENGTH_SHORT).show();
+      }
+    };
+    LinearLayout linearLayout = (LinearLayout) getLayoutInflater().inflate(R.layout.row_add_expense_select_account, null);
+    linearLayout.setOnClickListener(onClickListener);
+    linearLayout.setTag(account);
+    ((TextView) linearLayout.findViewById(R.id.textview_add_expense_select_account)).setText(account.getName());
+    return linearLayout;
+  }
+
+  private LinearLayout getLayoutWithImageForCategoryDialog(CategoryType categoryType, ViewGroup parent) {
+    View.OnClickListener onClickListener = new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        CategoryType categoryType = (CategoryType) view.getTag();
+        expenseModel.setCategory(categoryType);
+        categoryDialog.dismiss();
+        Toast.makeText(getContext(), "Selected category : " + view.getTag(), Toast.LENGTH_SHORT).show();
+      }
+    };
+    LinearLayout linearLayout = (LinearLayout) getLayoutInflater().inflate(R.layout.add_expense_dialog_category, parent, false);
+    linearLayout.setTag(categoryType);
+    linearLayout.setOnClickListener(onClickListener);
+    ((ImageView) linearLayout.findViewById(R.id.imageview_add_expense_dialog_category)).setImageResource(categoryType.getImage());
+    ((TextView) linearLayout.findViewById(R.id.textview_add_expense_dialog_category)).setText(categoryType.getName());
+    return linearLayout;
+  }
+
+  private LinearLayout getCategoryDialogRow() {
+    return (LinearLayout) getLayoutInflater().inflate(R.layout.add_activity_dialog_row, null);
+  }
+
+  private List<Account> getDummyAccounts(int n) {
+    String accountNames[] = new String[]{"HDFC 6021", "SBI 5500", "Kotak 22231", "Airtel", "PayTm"};
+    String accountIds[] = new String[]{"hdfc_6021", "sbi_5500", "kotak_22231", "airtel", "paytm"};
+
+    List<Account> accounts = new LinkedList<>();
+    for (int i = 0; i < n; i++) {
+      int k = FirstFragment.getRandomNumber(0, accountNames.length);
+      accounts.add(new Account(accountNames[k], accountIds[k]));
+    }
+    return accounts;
   }
 
   private List<CategoryType> getDummyCategories(int n) {

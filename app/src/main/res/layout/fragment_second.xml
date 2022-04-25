@@ -260,6 +260,7 @@
                 android:gravity="right|center">
 
                 <ImageView
+                  android:id="@+id/imageview_add_transaction_category"
                   android:layout_width="48dp"
                   android:layout_height="48dp"
                   android:layout_margin="@dimen/padding_sides_normal"
@@ -269,7 +270,6 @@
 
 
                 <ImageView
-                  android:id="@+id/imageview_add_transaction_category"
                   android:layout_width="48dp"
                   android:layout_height="48dp"
                   android:padding="@dimen/padding_sides_small"
@@ -416,11 +416,9 @@
                   android:padding="@dimen/padding_sides_small"
                   android:src="@drawable/arrow_down_icon" />
               </LinearLayout>
-
-
-
-
             </LinearLayout>
+
+
           </LinearLayout>
 
           <View

@@ -18,7 +18,7 @@
       android:layout_gravity="center"
       android:layout_marginTop="@dimen/padding_sides_small"
       android:layout_marginBottom="@dimen/padding_sides_small"
-      android:text="Select category"
+      android:text="Select Account"
       android:textColor="#000000"
       android:textSize="@dimen/textsize_title"
       android:textStyle="bold" />
@@ -27,5 +27,13 @@
       android:layout_width="match_parent"
       android:layout_height="8dp"
       android:background="@drawable/gradient_bar_light" />
+
+    <LinearLayout
+      android:id="@+id/linearlayout_box_add_expense_select_account"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="vertical">
+
+    </LinearLayout>
   </LinearLayout>
 </ScrollView>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:orientation="vertical">
+
+  <LinearLayout
+    android:id="@+id/linearlayout_row_add_expense_select_account"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#FEFEFE"
+    android:orientation="vertical">
+
+    <TextView
+      android:id="@+id/textview_add_expense_select_account"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/padding_sides_very_small"
+      android:layout_marginBottom="@dimen/padding_sides_very_small"
+      android:gravity="center"
+      android:text="HDFC 6021"
+      android:textColor="#000000"
+      android:textSize="@dimen/textsize_title"
+      android:textStyle="bold" />
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/padding_sides_very_small"
+      android:background="#FFFFFF"
+      android:orientation="vertical"
+      android:paddingLeft="@dimen/padding_sides_normal"
+      android:paddingRight="@dimen/padding_sides_normal">
+
+      <View
+        android:layout_width="match_parent"
+        android:layout_height="2px"
+        android:background="#858585" />
+    </LinearLayout>
+  </LinearLayout>
+
+</LinearLayout>
