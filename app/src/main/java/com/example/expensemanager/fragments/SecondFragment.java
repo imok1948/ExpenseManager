@@ -45,7 +45,6 @@ public class SecondFragment extends Fragment {
   private static final int SELECT_IMAGE_FROM_GALLERY_CODE = 101;
   private static final int EXPENSE_IMAGES_TO_BE_SHOWN_IN_LINEAR_LAYOUT = 4;
 
-  private int currentPhotosOnScreen = 0;
   private FragmentSecondBinding binding;
   private View rootView;
   private Calendar defaultCalendar;
@@ -53,8 +52,8 @@ public class SecondFragment extends Fragment {
   private AlertDialog calendarDialog, categoryDialog, paymentModeDialog, showPhotoDialog;
   private LinearLayout viewOfAddExpenseDialogRow;
 
-  private ExpenseModel expenseModel;
 
+  private ExpenseModel expenseModel;
 
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -110,7 +109,8 @@ public class SecondFragment extends Fragment {
   @Override
   public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
     super.onActivityResult(requestCode, resultCode, data);
-    if (requestCode == SELECT_IMAGE_FROM_GALLERY_CODE) {
+
+    if (requestCode == SELECT_IMAGE_FROM_GALLERY_CODE && data != null) {
       Uri uri = data.getData();
       ExpensePhoto expensePhoto = new ExpensePhoto(uri, uri, uri.toString());
       addImageViewOfTransactionPhoto(expensePhoto, binding.linearlayoutAddTransactionPhoto);
@@ -120,7 +120,6 @@ public class SecondFragment extends Fragment {
       } else {
         binding.textviewAddTransactionPhotoHint.setVisibility(View.GONE);
       }
-
     }
   }
 
@@ -313,22 +312,19 @@ public class SecondFragment extends Fragment {
   private void createShowPhotoDialog() {
     AlertDialog.Builder showPhotoBuilder = new AlertDialog.Builder(getActivity());
     View viewOfShowPhotoDialog = getLayoutInflater().inflate(R.layout.dialog_show_image_add_transaction, null);
-
     showPhotoBuilder.setView(viewOfShowPhotoDialog);
-    ViewPager viewPager = viewOfShowPhotoDialog.findViewById(R.id.viewpager_show_photo);
-
-    AdapterViewPagerShowPhoto adapterViewPagerShowPhoto = new AdapterViewPagerShowPhoto(getContext(), expenseModel.getExpensePhotosHashMap());
-    viewPager.setAdapter(adapterViewPagerShowPhoto);
-
     showPhotoDialog = showPhotoBuilder.create();
-
     showPhotoDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
       @Override
       public void onDismiss(DialogInterface dialogInterface) {
         updatePhotos();
-        Toast.makeText(getContext(), "Dismissed 2323", Toast.LENGTH_SHORT).show();
       }
     });
+
+    ViewPager viewPager = viewOfShowPhotoDialog.findViewById(R.id.viewpager_show_photo);
+
+    AdapterViewPagerShowPhoto adapterViewPagerShowPhoto = new AdapterViewPagerShowPhoto(getContext(), expenseModel.getExpensePhotosHashMap(), showPhotoDialog);
+    viewPager.setAdapter(adapterViewPagerShowPhoto);
   }
 
   private void updatePhotos() {
