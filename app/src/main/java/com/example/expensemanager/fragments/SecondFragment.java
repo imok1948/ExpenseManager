@@ -8,7 +8,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -114,7 +113,7 @@ public class SecondFragment extends Fragment {
     if (requestCode == SELECT_IMAGE_FROM_GALLERY_CODE) {
       Uri uri = data.getData();
       ExpensePhoto expensePhoto = new ExpensePhoto(uri, uri, uri.toString());
-      binding.linearlayoutAddTransactionPhoto.addView(getImageViewOfTransactionPhoto(expensePhoto, binding.linearlayoutAddTransactionPhoto));
+      addImageViewOfTransactionPhoto(expensePhoto, binding.linearlayoutAddTransactionPhoto);
 
       if (expenseModel.getExpensePhotosHashMap().size() == 0) {
         binding.textviewAddTransactionPhotoHint.setVisibility(View.VISIBLE);
@@ -126,8 +125,7 @@ public class SecondFragment extends Fragment {
   }
 
 
-  private ImageView getImageViewOfTransactionPhoto(ExpensePhoto expensePhoto, ViewGroup linearlayoutAddTransactionPhoto) {
-
+  private void addImageViewOfTransactionPhoto(ExpensePhoto expensePhoto, ViewGroup linearlayoutAddTransactionPhoto) {
     expensePhoto.setThumbnailURI(Utilities.getResizedImageUri(getContext(), expensePhoto.getImageUri(), getActivity().getExternalCacheDir()));
     ImageView imageView = (ImageView) getLayoutInflater().inflate(R.layout.element_imageview_add_transaction_photo, linearlayoutAddTransactionPhoto, false);
     imageView.setImageURI(expensePhoto.getThumbnailURI());
@@ -164,7 +162,8 @@ public class SecondFragment extends Fragment {
         showPhotoDialog.show();
       }
     });
-    return imageView;
+
+    linearlayoutAddTransactionPhoto.addView(imageView);
   }
 
   private void setupListeners() {
@@ -327,7 +326,6 @@ public class SecondFragment extends Fragment {
         Toast.makeText(getContext(), "Dismissed 2323", Toast.LENGTH_SHORT).show();
       }
     });
-
   }
 
   private void updatePhotos() {
@@ -335,7 +333,6 @@ public class SecondFragment extends Fragment {
     for (String key : expenseModel.getExpensePhotosHashMap().keySet()) {
       ExpensePhoto photo = expenseModel.getExpensePhotosHashMap().get(key);
       ImageView imageView = (ImageView) getLayoutInflater().inflate(R.layout.element_imageview_add_transaction_photo, binding.linearlayoutAddTransactionPhoto, false);
-
     }
   }
 
