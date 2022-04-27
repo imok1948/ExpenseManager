@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,19 +23,19 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.ViewPager;
 
 import com.example.expensemanager.R;
+import com.example.expensemanager.adapters.AdapterViewPagerShowPhoto;
 import com.example.expensemanager.databinding.FragmentSecondBinding;
 import com.example.expensemanager.utils.Account;
 import com.example.expensemanager.utils.CategoryType;
 import com.example.expensemanager.utils.ExpenseModel;
 import com.example.expensemanager.utils.ExpensePhoto;
+import com.example.expensemanager.utils.Utilities;
 
-import org.json.JSONArray;
-
-import java.net.URI;
 import java.util.Calendar;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -44,14 +45,14 @@ public class SecondFragment extends Fragment {
   private static final String TAG = Fragment.class.toString();
   private static final int SELECT_IMAGE_FROM_GALLERY_CODE = 101;
   private static final int EXPENSE_IMAGES_TO_BE_SHOWN_IN_LINEAR_LAYOUT = 4;
+
+  private int currentPhotosOnScreen = 0;
   private FragmentSecondBinding binding;
   private View rootView;
   private Calendar defaultCalendar;
   private View viewOfCalendarDialog, viewOfCategoryDialog, viewOfPaymentDialog;
-  private AlertDialog calendarDialog, categoryDialog, paymentModeDialog;
+  private AlertDialog calendarDialog, categoryDialog, paymentModeDialog, showPhotoDialog;
   private LinearLayout viewOfAddExpenseDialogRow;
-
-  private List<URI> imageUriList;
 
   private ExpenseModel expenseModel;
 
@@ -91,15 +92,15 @@ public class SecondFragment extends Fragment {
     createDateDialog();
     createCategoryDialog();
     createPaymentModeDialog();
+//    createDhowPhotoDialog();
   }
 
   //Done and working fine
 
   private void assignments() {
-    imageUriList = new LinkedList<>();
     defaultCalendar = Calendar.getInstance();
     defaultCalendar.setTimeInMillis(System.currentTimeMillis());
-    expenseModel = new ExpenseModel(198F, "", new CategoryType("1", "Foods", R.drawable.foods), defaultCalendar, new Account("HDFC 6022", "hdfc_6022"), new HashMap<>());
+    expenseModel = new ExpenseModel(198F, "", new CategoryType("1", "Foods", R.drawable.foods), defaultCalendar, new Account("HDFC 6022", "hdfc_6022"), new LinkedHashMap<>());
 
     //Initialize with their respective views
     viewOfCalendarDialog = getLayoutInflater().inflate(R.layout.dialog_select_date, null);
@@ -115,30 +116,52 @@ public class SecondFragment extends Fragment {
       ExpensePhoto expensePhoto = new ExpensePhoto(uri, uri, uri.toString());
       binding.linearlayoutAddTransactionPhoto.addView(getImageViewOfTransactionPhoto(expensePhoto, binding.linearlayoutAddTransactionPhoto));
 
+      if (expenseModel.getExpensePhotosHashMap().size() == 0) {
+        binding.textviewAddTransactionPhotoHint.setVisibility(View.VISIBLE);
+      } else {
+        binding.textviewAddTransactionPhotoHint.setVisibility(View.GONE);
+      }
+
     }
   }
 
-  private ImageView getImageViewOfTransactionPhoto(ExpensePhoto expensePhoto, ViewGroup linearlayoutAddTransactionPhoto) {
-    ImageView imageView = (ImageView) getLayoutInflater().inflate(R.layout.element_imageview_add_transaction_photo, linearlayoutAddTransactionPhoto, false);
-    imageView.setImageURI(expensePhoto.getImageUri());
 
+  private ImageView getImageViewOfTransactionPhoto(ExpensePhoto expensePhoto, ViewGroup linearlayoutAddTransactionPhoto) {
+
+    expensePhoto.setThumbnailURI(Utilities.getResizedImageUri(getContext(), expensePhoto.getImageUri(), getActivity().getExternalCacheDir()));
+    ImageView imageView = (ImageView) getLayoutInflater().inflate(R.layout.element_imageview_add_transaction_photo, linearlayoutAddTransactionPhoto, false);
     imageView.setImageURI(expensePhoto.getThumbnailURI());
     imageView.setTag(expensePhoto);
 
     expenseModel.getExpensePhotosHashMap().put(expensePhoto.getImageId(), expensePhoto);
-    //TODO : Save this image file in sdcard
+    //TODO : Save this image file in sdcard/SQL
     //TODO : Resize image
     //TODO : Generate unique hash as image id
+
+    //As of now let's keep the Linux timestamp in ms as hash id of image
 
     imageView.setOnLongClickListener(new View.OnLongClickListener() {
       @Override
       public boolean onLongClick(View view) {
         ExpensePhoto expensePhotoTag = (ExpensePhoto) view.getTag();
-        Toast.makeText(getContext(), "Removing photo => " + expensePhotoTag.getImageId(), Toast.LENGTH_SHORT).show();
         expenseModel.getExpensePhotosHashMap().remove(expensePhotoTag.getImageId());
         linearlayoutAddTransactionPhoto.removeView(view);
 
+        if (expenseModel.getExpensePhotosHashMap().size() == 0) {
+          binding.textviewAddTransactionPhotoHint.setVisibility(View.VISIBLE);
+        } else {
+          binding.textviewAddTransactionPhotoHint.setVisibility(View.GONE);
+        }
         return true;
+      }
+    });
+
+
+    imageView.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        createShowPhotoDialog();
+        showPhotoDialog.show();
       }
     });
     return imageView;
@@ -229,12 +252,9 @@ public class SecondFragment extends Fragment {
         startActivityForResult(Intent.createChooser(intent, "This is tilte"), SELECT_IMAGE_FROM_GALLERY_CODE);
       }
     });
-
-
   }
 
   private void updateViewFromModel() {
-
     float remainingValue = expenseModel.getAmount() - (int) expenseModel.getAmount();
     if (remainingValue != 0) {
       binding.edittextAddTransactionAmount.setText(expenseModel.getAmount() + "");
@@ -286,6 +306,37 @@ public class SecondFragment extends Fragment {
         updateViewFromModel();
       }
     });
+  }
+
+  private void createShowPhotoDialog() {
+    AlertDialog.Builder showPhotoBuilder = new AlertDialog.Builder(getActivity());
+    View viewOfShowPhotoDialog = getLayoutInflater().inflate(R.layout.dialog_show_image_add_transaction, null);
+
+    showPhotoBuilder.setView(viewOfShowPhotoDialog);
+    ViewPager viewPager = viewOfShowPhotoDialog.findViewById(R.id.viewpager_show_photo);
+
+    AdapterViewPagerShowPhoto adapterViewPagerShowPhoto = new AdapterViewPagerShowPhoto(getContext(), expenseModel.getExpensePhotosHashMap());
+    viewPager.setAdapter(adapterViewPagerShowPhoto);
+
+    showPhotoDialog = showPhotoBuilder.create();
+
+    showPhotoDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+      @Override
+      public void onDismiss(DialogInterface dialogInterface) {
+        updatePhotos();
+        Toast.makeText(getContext(), "Dismissed 2323", Toast.LENGTH_SHORT).show();
+      }
+    });
+
+  }
+
+  private void updatePhotos() {
+    binding.linearlayoutAddTransactionPhoto.removeAllViews();
+    for (String key : expenseModel.getExpensePhotosHashMap().keySet()) {
+      ExpensePhoto photo = expenseModel.getExpensePhotosHashMap().get(key);
+      ImageView imageView = (ImageView) getLayoutInflater().inflate(R.layout.element_imageview_add_transaction_photo, binding.linearlayoutAddTransactionPhoto, false);
+
+    }
   }
 
   private void createDateDialog() {

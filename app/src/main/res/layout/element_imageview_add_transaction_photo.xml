@@ -2,4 +2,6 @@
 <ImageView xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="48dp"
   android:layout_height="40dp"
-  android:src="@drawable/icon_pdf" />
+  android:layout_gravity="center"
+  android:layout_marginLeft="@dimen/margin_medium"
+  android:layout_marginRight="@dimen/margin_medium" />

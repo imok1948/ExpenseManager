@@ -17,10 +17,12 @@
         <entry key="app/src/main/res/layout/dialog_category_picker.xml" value="0.33" />
         <entry key="app/src/main/res/layout/dialog_payment_mode.xml" value="0.25" />
         <entry key="app/src/main/res/layout/dialog_select_date.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/dialog_show_image_add_transaction.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/element_imageview_add_transaction_photo.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/fragment_first.xml" value="0.9715909090909091" />
         <entry key="app/src/main/res/layout/fragment_second.xml" value="0.33" />
         <entry key="app/src/main/res/layout/item_view_add_expense_accounts.xml" value="0.5" />
+        <entry key="app/src/main/res/layout/item_view_show_photo.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/item_view_transactions_date.xml" value="0.35625" />
         <entry key="app/src/main/res/layout/item_view_transactions_endblock.xml" value="0.35625" />
         <entry key="app/src/main/res/layout/item_view_transactions_transaction.xml" value="0.33" />

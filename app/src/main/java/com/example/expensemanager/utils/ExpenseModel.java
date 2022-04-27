@@ -39,7 +39,7 @@ public class ExpenseModel {
 
   @Override
   public String toString() {
-    return "ExpenseModel{" + "amount=" + amount + "\t\n description='" + description + "'" + "\t\n category=" + category + "\t\n calendar=" + calendar + "\t\n account=" + account + "\t\n expensePhotosHashMap=" + expensePhotosHashMap + '}';
+    return "ExpenseModel{" + "amount=" + amount + "\t\n description='" + description + "'" + "\t\n category=" + category + "\t\n calendar=" + calendar + "\t\n account=" + account + "\t\n Total expensePhotosHashMap=" + expensePhotosHashMap.size() + '}';
   }
 
 
