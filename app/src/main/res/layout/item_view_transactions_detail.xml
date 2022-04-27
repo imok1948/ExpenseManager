@@ -35,7 +35,7 @@
       android:layout_height="wrap_content"
       android:orientation="vertical">
 
-      <!-- TODO!  Equal space b/w both texts-->
+      <!-- TODO!  Equal space b/w both texts the gap b/w Lunch at Ruchi... and Food == -120$ and Sun, 17...-->
 
       <TextView
         android:id="@+id/textview_transactions_description"

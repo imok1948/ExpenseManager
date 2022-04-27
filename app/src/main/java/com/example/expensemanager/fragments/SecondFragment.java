@@ -222,7 +222,6 @@ public class SecondFragment extends Fragment {
         InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.showSoftInput(binding.edittextAddTransactionAmount, 0);
 
-        //ToDo : Move the cursor to left of decimal point if there any
         binding.edittextAddTransactionAmount.setSelection(binding.edittextAddTransactionAmount.getText().length());
       }
     });
@@ -319,7 +318,6 @@ public class SecondFragment extends Fragment {
   }
 
   private void createShowPhotoDialog(int position) {
-    //TODO : Show particular image after opening dialog, instead of opening the very first image
     AlertDialog.Builder showPhotoBuilder = new AlertDialog.Builder(getActivity());
     View viewOfShowPhotoDialog = getLayoutInflater().inflate(R.layout.dialog_show_image_add_transaction, null);
     showPhotoBuilder.setView(viewOfShowPhotoDialog);

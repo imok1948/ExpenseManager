@@ -24,6 +24,7 @@
         <entry key="app/src/main/res/layout/item_view_add_expense_accounts.xml" value="0.5" />
         <entry key="app/src/main/res/layout/item_view_show_photo.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/item_view_transactions_date.xml" value="0.35625" />
+        <entry key="app/src/main/res/layout/item_view_transactions_detail.xml" value="0.67" />
         <entry key="app/src/main/res/layout/item_view_transactions_endblock.xml" value="0.35625" />
         <entry key="app/src/main/res/layout/item_view_transactions_transaction.xml" value="0.33" />
         <entry key="app/src/main/res/layout/row_add_expense_select_account.xml" value="0.22" />
