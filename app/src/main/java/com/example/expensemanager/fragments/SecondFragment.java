@@ -126,6 +126,8 @@ public class SecondFragment extends Fragment {
 
 
   private void addImageViewOfTransactionPhoto(ExpensePhoto expensePhoto, ViewGroup linearlayoutAddTransactionPhoto) {
+
+    binding.textviewAddTransactionPhotoHint.setVisibility(View.GONE);
     expensePhoto.setThumbnailURI(Utilities.getResizedImageUri(getContext(), expensePhoto.getImageUri(), getActivity().getExternalCacheDir()));
     ImageView imageView = (ImageView) getLayoutInflater().inflate(R.layout.element_imageview_add_transaction_photo, linearlayoutAddTransactionPhoto, false);
     imageView.setImageURI(expensePhoto.getThumbnailURI());
@@ -144,6 +146,7 @@ public class SecondFragment extends Fragment {
         ExpensePhoto expensePhotoTag = (ExpensePhoto) view.getTag();
         expenseModel.getExpensePhotosHashMap().remove(expensePhotoTag.getImageId());
         linearlayoutAddTransactionPhoto.removeView(view);
+        Toast.makeText(getContext(), "Photo deleted", Toast.LENGTH_SHORT).show();
 
         if (expenseModel.getExpensePhotosHashMap().size() == 0) {
           binding.textviewAddTransactionPhotoHint.setVisibility(View.VISIBLE);
@@ -330,9 +333,11 @@ public class SecondFragment extends Fragment {
 
   private void updatePhotos() {
     binding.linearlayoutAddTransactionPhoto.removeAllViews();
+    binding.textviewAddTransactionPhotoHint.setVisibility(View.VISIBLE);
+
     for (String key : expenseModel.getExpensePhotosHashMap().keySet()) {
-      ExpensePhoto photo = expenseModel.getExpensePhotosHashMap().get(key);
-      ImageView imageView = (ImageView) getLayoutInflater().inflate(R.layout.element_imageview_add_transaction_photo, binding.linearlayoutAddTransactionPhoto, false);
+      ExpensePhoto expensePhoto = expenseModel.getExpensePhotosHashMap().get(key);
+      addImageViewOfTransactionPhoto(expensePhoto, binding.linearlayoutAddTransactionPhoto);
     }
   }
 
