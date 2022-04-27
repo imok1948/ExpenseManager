@@ -463,6 +463,7 @@
                   android:layout_height="wrap_content"
                   android:gravity="left|center">
 
+                  <!--                  TODO : Handle position, currently it is going upward (gravity) put it to the center-->
                   <LinearLayout
                     android:id="@+id/linearlayout_add_transaction_photo"
                     android:layout_width="wrap_content"

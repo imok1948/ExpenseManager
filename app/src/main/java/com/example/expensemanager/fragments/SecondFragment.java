@@ -123,7 +123,6 @@ public class SecondFragment extends Fragment {
     }
   }
 
-
   private void addImageViewOfTransactionPhoto(ExpensePhoto expensePhoto, ViewGroup linearlayoutAddTransactionPhoto) {
 
     binding.textviewAddTransactionPhotoHint.setVisibility(View.GONE);
@@ -134,7 +133,6 @@ public class SecondFragment extends Fragment {
 
     expenseModel.getExpensePhotosHashMap().put(expensePhoto.getImageId(), expensePhoto);
     //TODO : Save this image file in sdcard/SQL
-    //TODO : Resize image
     //TODO : Generate unique hash as image id
 
     //As of now let's keep the Linux timestamp in ms as hash id of image
@@ -160,7 +158,18 @@ public class SecondFragment extends Fragment {
     imageView.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        createShowPhotoDialog();
+
+        int position = 0;
+        int currentItem = 0;
+        for (String key : expenseModel.getExpensePhotosHashMap().keySet()) {
+          if (view.getTag() == expenseModel.getExpensePhotosHashMap().get(key)) {
+            position = currentItem;
+            break;
+          }
+          currentItem += 1;
+        }
+
+        createShowPhotoDialog(position);
         showPhotoDialog.show();
       }
     });
@@ -309,7 +318,8 @@ public class SecondFragment extends Fragment {
     });
   }
 
-  private void createShowPhotoDialog() {
+  private void createShowPhotoDialog(int position) {
+    //TODO : Show particular image after opening dialog, instead of opening the very first image
     AlertDialog.Builder showPhotoBuilder = new AlertDialog.Builder(getActivity());
     View viewOfShowPhotoDialog = getLayoutInflater().inflate(R.layout.dialog_show_image_add_transaction, null);
     showPhotoBuilder.setView(viewOfShowPhotoDialog);
@@ -322,9 +332,9 @@ public class SecondFragment extends Fragment {
     });
 
     ViewPager viewPager = viewOfShowPhotoDialog.findViewById(R.id.viewpager_show_photo);
-
     AdapterViewPagerShowPhoto adapterViewPagerShowPhoto = new AdapterViewPagerShowPhoto(getContext(), expenseModel.getExpensePhotosHashMap(), showPhotoDialog);
     viewPager.setAdapter(adapterViewPagerShowPhoto);
+    viewPager.setCurrentItem(position);
   }
 
   private void updatePhotos() {

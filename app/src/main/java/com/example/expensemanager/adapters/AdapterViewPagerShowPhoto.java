@@ -49,6 +49,7 @@ public class AdapterViewPagerShowPhoto extends PagerAdapter {
   }
 
 
+
   @Override
   public int getCount() {
     return imageListKeys.size();
