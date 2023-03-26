@@ -15,9 +15,15 @@
       android:id="@+id/action_FirstFragment_to_SecondFragment"
       app:destination="@id/SecondFragment"
       app:enterAnim="@anim/slide_in"
-      app:exitAnim="@anim/nav_default_exit_anim" />
+      app:exitAnim="@anim/nav_default_exit_anim"
+      app:popUpToInclusive="true" />
+    <action
+      android:id="@+id/action_FirstFragment_to_ShowTransactionDetailsFragment"
+      app:destination="@id/ShowTransactionDetailsFragment" />
 
   </fragment>
+
+
   <fragment
     android:id="@+id/SecondFragment"
     android:name="com.example.expensemanager.fragments.SecondFragment"
@@ -27,6 +33,20 @@
     <action
       android:id="@+id/action_SecondFragment_to_FirstFragment"
       app:destination="@id/FirstFragment"
-      app:enterAnim="@anim/slide_out" />
+      app:enterAnim="@anim/slide_out"
+      app:popUpTo="@id/FirstFragment" />
+  </fragment>
+
+
+  <fragment
+    android:id="@+id/ShowTransactionDetailsFragment"
+    android:name="com.example.expensemanager.fragments.ShowTransactionDetailsFragment"
+    android:label="@string/show_transaction_details_label"
+    tools:layout="@layout/fragment_show_transaction_details">
+
+    <action
+      android:id="@+id/action_ShowTransactionDetailsFragment_to_FirstFragment"
+      app:destination="@id/FirstFragment"
+      app:popUpTo="@id/FirstFragment" />
   </fragment>
 </navigation>

@@ -22,6 +22,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.expensemanager.R;
@@ -58,8 +61,7 @@ public class SecondFragment extends Fragment {
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     binding = FragmentSecondBinding.inflate(inflater, container, false);
-    rootView = binding.getRoot();
-    return rootView;
+    return binding.getRoot();
   }
 
   public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
@@ -178,7 +180,6 @@ public class SecondFragment extends Fragment {
   }
 
   private void setupListeners() {
-
     binding.edittextAddTransactionAmount.setOnFocusChangeListener(new View.OnFocusChangeListener() {
       @Override
       public void onFocusChange(View view, boolean focusGain) {
@@ -188,8 +189,6 @@ public class SecondFragment extends Fragment {
         }
       }
     });
-
-
     binding.edittextAddTransactionDescription.addTextChangedListener(new TextWatcher() {
       @Override
       public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -205,16 +204,12 @@ public class SecondFragment extends Fragment {
       public void afterTextChanged(Editable editable) {
       }
     });
-
-
     binding.linearlayoutAddTransactionCategory.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
         categoryDialog.show();
       }
     });
-
-
     binding.linearlayoutAddTransactionAmount.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
@@ -225,16 +220,12 @@ public class SecondFragment extends Fragment {
         binding.edittextAddTransactionAmount.setSelection(binding.edittextAddTransactionAmount.getText().length());
       }
     });
-
-
     binding.linearlayoutAddTransactionDate.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
         calendarDialog.show();
       }
     });
-
-
     binding.linearlayoutAddTransactionPayment.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
@@ -242,7 +233,6 @@ public class SecondFragment extends Fragment {
         paymentModeDialog.show();
       }
     });
-
     binding.textviewAddExpenseButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
@@ -250,8 +240,6 @@ public class SecondFragment extends Fragment {
         Toast.makeText(getContext(), expenseModel + "", Toast.LENGTH_LONG).show();
       }
     });
-
-
     binding.buttonAddExpenseAddPicture.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
@@ -259,6 +247,12 @@ public class SecondFragment extends Fragment {
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(intent, "This is tilte"), SELECT_IMAGE_FROM_GALLERY_CODE);
+      }
+    });
+    binding.arrowBackButton.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        Navigation.findNavController(binding.getRoot()).popBackStack();
       }
     });
   }
@@ -296,7 +290,7 @@ public class SecondFragment extends Fragment {
     //Find category box
     LinearLayout linearLayoutBox = viewOfCategoryDialog.findViewById(R.id.dialog_category_picker_linear_layout_box);
     int totalCategories = 14;
-    List<CategoryType> categories = getDummyCategories(totalCategories);
+    List<CategoryType> categories = Utilities.getDummyCategories(totalCategories);
     int totalRows = (int) Math.ceil(totalCategories / (float) CATEGORIES_PER_ROW);
     for (int i = 0; i < totalRows; i++) {
       viewOfAddExpenseDialogRow = getCategoryDialogRow();
@@ -372,7 +366,7 @@ public class SecondFragment extends Fragment {
   private void createPaymentModeDialog() {
     AlertDialog.Builder paymentBuilder = new AlertDialog.Builder(getActivity());
     LinearLayout linearLayoutBox = viewOfPaymentDialog.findViewById(R.id.linearlayout_box_add_expense_select_account);
-    List<Account> accountList = getDummyAccounts(5);
+    List<Account> accountList = Utilities.getDummyAccounts(5);
 
     for (Account account : accountList) {
       linearLayoutBox.addView(getRowForPaymentModeDialog(account));
@@ -426,31 +420,6 @@ public class SecondFragment extends Fragment {
 
   private LinearLayout getCategoryDialogRow() {
     return (LinearLayout) getLayoutInflater().inflate(R.layout.add_activity_dialog_row, null);
-  }
-
-  private List<Account> getDummyAccounts(int n) {
-    String accountNames[] = new String[]{"HDFC 6021", "SBI 5500", "Kotak 22231", "Airtel", "PayTm"};
-    String accountIds[] = new String[]{"hdfc_6021", "sbi_5500", "kotak_22231", "airtel", "paytm"};
-
-    List<Account> accounts = new LinkedList<>();
-    for (int i = 0; i < n; i++) {
-      int k = FirstFragment.getRandomNumber(0, accountNames.length);
-      accounts.add(new Account(accountNames[k], accountIds[k]));
-    }
-    return accounts;
-  }
-
-  private List<CategoryType> getDummyCategories(int n) {
-    String[] categoryNames = new String[]{"Foods", "Cloths", "Health", "Electronics", "Miscllenciuos", "Study", "Work", "Others"};
-    String[] categoryIds = new String[]{"1", "2", "3", "4", "5", "6", "7", "8"};
-    int[] categoryImages = new int[]{R.drawable.foods, R.drawable.category_clothes, R.drawable.health, R.drawable.category_electronics, R.drawable.misclencious, R.drawable.study, R.drawable.category_work, R.drawable.category_others};
-
-
-    List<CategoryType> categoryTypeList = new LinkedList<>();
-    for (int i = 0; i < n; i++) {
-      categoryTypeList.add(new CategoryType(categoryIds[i % categoryIds.length], categoryNames[i % categoryNames.length], categoryImages[i % categoryImages.length]));
-    }
-    return categoryTypeList;
   }
 }
 

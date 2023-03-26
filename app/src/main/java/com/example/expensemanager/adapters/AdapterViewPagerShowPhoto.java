@@ -49,7 +49,6 @@ public class AdapterViewPagerShowPhoto extends PagerAdapter {
   }
 
 
-
   @Override
   public int getCount() {
     return imageListKeys.size();
@@ -64,8 +63,8 @@ public class AdapterViewPagerShowPhoto extends PagerAdapter {
   @Override
   public Object instantiateItem(@NonNull ViewGroup container, int position) {
     View viewOfItemShowPhotos = layoutInflater.inflate(R.layout.item_view_show_photo, container, false);
-    ((ImageView) viewOfItemShowPhotos.findViewById(R.id.imageview_dialog_show_photo)).setImageURI(imageHashMap.get(imageListKeys.get(position)).getImageUri());
-    ((TextView) viewOfItemShowPhotos.findViewById(R.id.textview_count_show_photo_dialog)).setText((position + 1) + "/" + imageHashMap.size());
+    ((ImageView) viewOfItemShowPhotos.findViewById(R.id.imageview_view_details_show_photo)).setImageURI(imageHashMap.get(imageListKeys.get(position)).getImageUri());
+    ((TextView) viewOfItemShowPhotos.findViewById(R.id.textview_count_show_photo_view_details)).setText((position + 1) + "/" + imageHashMap.size());
     ImageView deleteButton = viewOfItemShowPhotos.findViewById(R.id.delete_button_show_photo_dialog);
     deleteButton.setOnClickListener(new View.OnClickListener() {
       @Override

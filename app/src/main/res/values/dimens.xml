@@ -15,7 +15,10 @@
   <dimen name="textsize_title">18dp</dimen>
   <dimen name="margin_medium">10dp</dimen>
   <dimen name="padding_sides_normal">14dp</dimen>
+  <dimen name="padding_normal_small_not_too_small">0dp</dimen>
   <dimen name="padding_sides_small">10dp</dimen>
-  <dimen name="layout_gap_medium">24dp</dimen>
+  <dimen name="layout_gap_medium">12dp</dimen>
   <dimen name="padding_sides_very_small">8dp</dimen>
+  <dimen name="textsize_small">10dp</dimen>
+  <dimen name="textsize_normal">14dp</dimen>
 </resources>
