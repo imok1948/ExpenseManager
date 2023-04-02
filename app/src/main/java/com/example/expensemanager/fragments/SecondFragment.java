@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -83,7 +84,8 @@ public class SecondFragment extends Fragment {
     initDialogs();
 
     //Now setting up focus and keyboard for the amount view
-    binding.edittextAddTransactionAmount.requestFocus();
+    //TODO : Enable requestFocus after development completed
+    //binding.edittextAddTransactionAmount.requestFocus();
     InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
     imm.showSoftInput(binding.edittextAddTransactionAmount, 0);
   }
@@ -100,7 +102,7 @@ public class SecondFragment extends Fragment {
   private void assignments() {
     defaultCalendar = Calendar.getInstance();
     defaultCalendar.setTimeInMillis(System.currentTimeMillis());
-    expenseModel = new ExpenseModel(198F, "", new CategoryType("1", "Foods", R.drawable.foods), defaultCalendar, new Account("HDFC 6022", "hdfc_6022"), new LinkedHashMap<>());
+    expenseModel = new ExpenseModel(197F, "", new CategoryType("1", "Foods", R.drawable.foods), defaultCalendar, new Account("HDFC 6022", "hdfc_6022"), new LinkedHashMap<>());
 
     //Initialize with their respective views
     viewOfCalendarDialog = getLayoutInflater().inflate(R.layout.dialog_select_date, null);
@@ -114,12 +116,16 @@ public class SecondFragment extends Fragment {
 
     if (requestCode == SELECT_IMAGE_FROM_GALLERY_CODE && data != null) {
       Uri uri = data.getData();
-      ExpensePhoto expensePhoto = new ExpensePhoto(uri, uri, uri.toString());
+
+
+      //ExpensePhoto expensePhoto = new ExpensePhoto(uri, uri, uri.toString());
+      ExpensePhoto expensePhoto = new ExpensePhoto(uri, uri, System.currentTimeMillis() + "");
       addImageViewOfTransactionPhoto(expensePhoto, binding.linearlayoutAddTransactionPhoto);
 
       if (expenseModel.getExpensePhotosHashMap().size() == 0) {
         binding.textviewAddTransactionPhotoHint.setVisibility(View.VISIBLE);
-      } else {
+      }
+      else {
         binding.textviewAddTransactionPhotoHint.setVisibility(View.GONE);
       }
     }
@@ -149,7 +155,8 @@ public class SecondFragment extends Fragment {
 
         if (expenseModel.getExpensePhotosHashMap().size() == 0) {
           binding.textviewAddTransactionPhotoHint.setVisibility(View.VISIBLE);
-        } else {
+        }
+        else {
           binding.textviewAddTransactionPhotoHint.setVisibility(View.GONE);
         }
         return true;
@@ -238,6 +245,7 @@ public class SecondFragment extends Fragment {
       public void onClick(View view) {
         expenseModel.setAmount(Float.parseFloat(binding.edittextAddTransactionAmount.getText() + ""));
         Toast.makeText(getContext(), expenseModel + "", Toast.LENGTH_LONG).show();
+        Log.d("showTransaction", expenseModel + "");
       }
     });
     binding.buttonAddExpenseAddPicture.setOnClickListener(new View.OnClickListener() {
@@ -261,7 +269,8 @@ public class SecondFragment extends Fragment {
     float remainingValue = expenseModel.getAmount() - (int) expenseModel.getAmount();
     if (remainingValue != 0) {
       binding.edittextAddTransactionAmount.setText(expenseModel.getAmount() + "");
-    } else {
+    }
+    else {
       binding.edittextAddTransactionAmount.setText((int) expenseModel.getAmount() + "");
     }
     binding.edittextAddTransactionDescription.setText(expenseModel.getDescription());

@@ -1,8 +1,10 @@
 package com.example.expensemanager.utils;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 public class ExpenseModel {
   private float amount;
@@ -39,7 +41,12 @@ public class ExpenseModel {
 
   @Override
   public String toString() {
-    return "ExpenseModel{" + "amount=" + amount + "\t\n description='" + description + "'" + "\t\n category=" + category + "\t\n calendar=" + calendar + "\t\n account=" + account + "\t\n Total expensePhotosHashMap=" + expensePhotosHashMap.size() + '}';
+    StringBuilder sb = new StringBuilder("");
+    for (String key : expensePhotosHashMap.keySet()) {
+      sb.append(expensePhotosHashMap.get(key) + "\t\n");
+    }
+
+    return "ExpenseModel{" + "amount=" + amount + "\t\n description='" + description + "'" + "\t\n category=" + category + "\t\n calendar=" + calendar + "\t\n account=" + account + "\t\n Total expensePhotosHashMap=" + expensePhotosHashMap.size() + "\t\n Photos=" + sb + '}';
   }
 
 
