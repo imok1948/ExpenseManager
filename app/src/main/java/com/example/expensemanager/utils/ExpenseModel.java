@@ -45,7 +45,6 @@ public class ExpenseModel {
     for (String key : expensePhotosHashMap.keySet()) {
       sb.append(expensePhotosHashMap.get(key) + "\t\n");
     }
-
     return "ExpenseModel{" + "amount=" + amount + "\t\n description='" + description + "'" + "\t\n category=" + category + "\t\n calendar=" + calendar + "\t\n account=" + account + "\t\n Total expensePhotosHashMap=" + expensePhotosHashMap.size() + "\t\n Photos=" + sb + '}';
   }
 

@@ -20,6 +20,9 @@ import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity {
 
+  //Firebase authentication
+  //private FirebaseAuth mAuth;
+
   private AppBarConfiguration appBarConfiguration;
   private ActivityMainBinding binding;
 

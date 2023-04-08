@@ -36,6 +36,12 @@ import com.example.expensemanager.utils.CategoryType;
 import com.example.expensemanager.utils.ExpenseModel;
 import com.example.expensemanager.utils.ExpensePhoto;
 import com.example.expensemanager.utils.Utilities;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Calendar;
 import java.util.LinkedHashMap;
@@ -58,6 +64,10 @@ public class SecondFragment extends Fragment {
 
 
   private ExpenseModel expenseModel;
+
+
+  //Firebase things
+  private FirebaseFirestore firebaseFirestore;
 
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -100,6 +110,7 @@ public class SecondFragment extends Fragment {
   //Done and working fine
 
   private void assignments() {
+
     defaultCalendar = Calendar.getInstance();
     defaultCalendar.setTimeInMillis(System.currentTimeMillis());
     expenseModel = new ExpenseModel(197F, "", new CategoryType("1", "Foods", R.drawable.foods), defaultCalendar, new Account("HDFC 6022", "hdfc_6022"), new LinkedHashMap<>());
@@ -108,6 +119,10 @@ public class SecondFragment extends Fragment {
     viewOfCalendarDialog = getLayoutInflater().inflate(R.layout.dialog_select_date, null);
     viewOfCategoryDialog = getLayoutInflater().inflate(R.layout.dialog_category_picker, null);
     viewOfPaymentDialog = getLayoutInflater().inflate(R.layout.dialog_payment_mode, null);
+
+    //Firebase things
+    FirebaseApp.initializeApp(getActivity());
+    firebaseFirestore = FirebaseFirestore.getInstance();
   }
 
   @Override
@@ -246,6 +261,21 @@ public class SecondFragment extends Fragment {
         expenseModel.setAmount(Float.parseFloat(binding.edittextAddTransactionAmount.getText() + ""));
         Toast.makeText(getContext(), expenseModel + "", Toast.LENGTH_LONG).show();
         Log.d("showTransaction", expenseModel + "");
+
+        //Add expense to Firebase
+        CollectionReference collectionReference = firebaseFirestore.collection("expenseManager/bob/transactions");
+        collectionReference.add(expenseModel).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+          @Override
+          public void onComplete(@NonNull Task<DocumentReference> task) {
+            if (task.isSuccessful()) {
+              Toast.makeText(getContext(), "Adding model to Firebase success", Toast.LENGTH_SHORT).show();
+            }
+            else {
+              Toast.makeText(getContext(), "Adding model to Firebase failed", Toast.LENGTH_SHORT).show();
+            }
+          }
+        });
+
       }
     });
     binding.buttonAddExpenseAddPicture.setOnClickListener(new View.OnClickListener() {

@@ -10,9 +10,11 @@
         <entry key="app/src/main/res/drawable/shape_button_add_expense.xml" value="0.35" />
         <entry key="app/src/main/res/drawable/shape_dialog_background.xml" value="0.35" />
         <entry key="app/src/main/res/drawable/shape_layout_border_radius.xml" value="0.35" />
+        <entry key="app/src/main/res/layout/activity_login.xml" value="0.29471733086190915" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.33" />
         <entry key="app/src/main/res/layout/add_activity_dialog_row.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/add_expense_dialog_category.xml" value="0.29243266353142366" />
+        <entry key="app/src/main/res/layout/content_login.xml" value="0.4463445917058572" />
         <entry key="app/src/main/res/layout/content_main.xml" value="0.35625" />
         <entry key="app/src/main/res/layout/dialog_category_picker.xml" value="0.33" />
         <entry key="app/src/main/res/layout/dialog_payment_mode.xml" value="0.25" />
@@ -20,7 +22,9 @@
         <entry key="app/src/main/res/layout/dialog_show_image_add_transaction.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/element_imageview_add_transaction_photo.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/fragment_first.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/fragment_first2.xml" value="0.4463445917058572" />
         <entry key="app/src/main/res/layout/fragment_second.xml" value="0.5" />
+        <entry key="app/src/main/res/layout/fragment_second2.xml" value="0.4463445917058572" />
         <entry key="app/src/main/res/layout/fragment_show_transaction_details.xml" value="0.25" />
         <entry key="app/src/main/res/layout/item_view_add_expense_accounts.xml" value="0.5" />
         <entry key="app/src/main/res/layout/item_view_show_photo.xml" value="0.29243266353142366" />
