@@ -26,6 +26,17 @@ public class AdapterTransactions extends RecyclerView.Adapter<AdapterTransaction
     this.transactions = transactions;
   }
 
+  public AdapterTransactions() {
+  }
+
+  public List<TransactionsModel> getTransactions() {
+    return transactions;
+  }
+
+  public void setTransactions(List<TransactionsModel> transactions) {
+    this.transactions = transactions;
+  }
+
   @NonNull
   @Override
   public TransactionsHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -34,10 +45,12 @@ public class AdapterTransactions extends RecyclerView.Adapter<AdapterTransaction
     if (viewType == TRANSACTIONS_DATE) {
       View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_view_transactions_date, parent, false);
       holder = new TransactionsHolder(view, viewType);
-    } else if (viewType == TRANSACTIONS_TRANSACTION) {
+    }
+    else if (viewType == TRANSACTIONS_TRANSACTION) {
       View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_view_transactions_detail, parent, false);
       holder = new TransactionsHolder(view, viewType);
-    } else {
+    }
+    else {
       View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_view_transactions_endblock, parent, false);
       holder = new TransactionsHolder(view, viewType);
     }
@@ -49,7 +62,8 @@ public class AdapterTransactions extends RecyclerView.Adapter<AdapterTransaction
 
     if (transactions.get(position).isEndBlock()) {
 
-    } else {
+    }
+    else {
       if (transactions.get(position).isDate()) {
         String dateDate, dateMonth, dateYear, dateDay;
         dateDate = transactions.get(position).getDateDate();
@@ -58,7 +72,8 @@ public class AdapterTransactions extends RecyclerView.Adapter<AdapterTransaction
         dateDay = transactions.get(position).getDateDay();
         holder.setDate(dateDate, dateMonth, dateYear, dateDay);
 
-      } else {
+      }
+      else {
         int image = transactions.get(position).getTransactionImage();
         String description = transactions.get(position).getTransactionDescription();
         String category = transactions.get(position).getTransactionCategory();
@@ -72,7 +87,12 @@ public class AdapterTransactions extends RecyclerView.Adapter<AdapterTransaction
 
   @Override
   public int getItemCount() {
-    return transactions.size();
+    if (transactions != null) {
+      return transactions.size();
+    }
+    else {
+      return 0;
+    }
   }
 
   @Override
@@ -80,9 +100,11 @@ public class AdapterTransactions extends RecyclerView.Adapter<AdapterTransaction
 
     if (transactions.get(position).isEndBlock()) {
       return TRANSACTIONS_ENDBLOCK;
-    } else if (transactions.get(position).isDate()) {
+    }
+    else if (transactions.get(position).isDate()) {
       return TRANSACTIONS_DATE;
-    } else {
+    }
+    else {
       return TRANSACTIONS_TRANSACTION;
     }
   }
@@ -99,13 +121,15 @@ public class AdapterTransactions extends RecyclerView.Adapter<AdapterTransaction
       if (viewType == TRANSACTIONS_DATE) {
         dateDate = itemView.findViewById(R.id.transactions_date_date);
         dateDay = itemView.findViewById(R.id.transactions_date_day);
-      } else if (viewType == TRANSACTIONS_TRANSACTION) {
+      }
+      else if (viewType == TRANSACTIONS_TRANSACTION) {
         image = itemView.findViewById(R.id.imageview_transactions_image);
         description = itemView.findViewById(R.id.textview_transactions_description);
         category = itemView.findViewById(R.id.textview_transactions_category);
         amount = itemView.findViewById(R.id.textview_transactions_amount);
         date = itemView.findViewById(R.id.textview_transactions_date);
-      } else {
+      }
+      else {
         itemView.findViewById(R.id.transactions_end_of_block).setVisibility(View.VISIBLE);
       }
     }

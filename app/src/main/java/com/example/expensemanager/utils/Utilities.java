@@ -4,10 +4,8 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.example.expensemanager.R;
 import com.example.expensemanager.models.TransactionsModel;
@@ -17,11 +15,13 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URI;
-import java.util.Arrays;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 
 public class Utilities {
 
@@ -36,10 +36,12 @@ public class Utilities {
       InputStream inputStream = context.getContentResolver().openInputStream(uri);
       if (inputStream == null) {
         return null;
-      } else {
+      }
+      else {
         return BitmapFactory.decodeStream(inputStream);
       }
-    } catch (FileNotFoundException e) {
+    }
+    catch (FileNotFoundException e) {
       e.printStackTrace();
     }
     return null;
@@ -67,10 +69,12 @@ public class Utilities {
       resizedImageStream.flush();
       resizedImageStream.close();
       resizedImageUri = Uri.parse(resizedImageFile.toString());
-    } catch (IOException e) {
+    }
+    catch (IOException e) {
       Log.e(TAG, "Error resizing" + e);
       e.printStackTrace();
-    } finally {
+    }
+    finally {
       return resizedImageUri;
     }
   }
@@ -83,6 +87,14 @@ public class Utilities {
     return (int) (dp * Resources.getSystem().getDisplayMetrics().density);
   }
 
+  public static TransactionsModel convertExpenseModelToTransactionsModel(ExpenseModel expenseModel) {
+    SimpleDateFormat dateFormat = new SimpleDateFormat("dd MM yyyy");
+    String date = dateFormat.format(expenseModel.getTimestamp());
+
+    TransactionsModel transactionsModel = new TransactionsModel(false, expenseModel.getCategory().getImage(), expenseModel.getDescription(), expenseModel.getCategory().getName(), "" + expenseModel.getAmount(), date);
+
+    return transactionsModel;
+  }
 
   public static List<TransactionsModel> getDummyData(int n) {
     int images[] = new int[]{R.drawable.foods, R.drawable.gifts, R.drawable.health, R.drawable.misclencious, R.drawable.study};
@@ -107,7 +119,8 @@ public class Utilities {
         String date = dates[getRandomNumber(0, dates.length)];
         list.add(new TransactionsModel(false, image, description, category, amount, date));
 
-      } else {
+      }
+      else {
         if (list.size() != 0) {
           //Not the first transaction, but end of block
           list.add(new TransactionsModel(true));
@@ -154,16 +167,11 @@ public class Utilities {
     String[] categoryIds = new String[]{"1", "2", "3", "4", "5", "6", "7", "8"};
     int[] categoryImages = new int[]{R.drawable.foods, R.drawable.category_clothes, R.drawable.health, R.drawable.category_electronics, R.drawable.misclencious, R.drawable.study, R.drawable.category_work, R.drawable.category_others};
 
-
     List<CategoryType> categoryTypeList = new LinkedList<>();
     for (int i = 0; i < n; i++) {
       categoryTypeList.add(new CategoryType(categoryIds[i % categoryIds.length], categoryNames[i % categoryNames.length], categoryImages[i % categoryImages.length]));
     }
     return categoryTypeList;
-  }
-
-
-  public static void tempFunction() {
   }
 
 
@@ -191,4 +199,51 @@ public class Utilities {
 
     return list;
   }
+
+  public static ExpenseModel createRandomExpenseModel() {
+    Random random = new Random();
+
+    // Generate random amount between 1 and 10000
+    float amount = random.nextFloat() * 10000;
+
+    // Generate random description
+    String[] descriptions = {"Food", "Transportation", "Entertainment", "Utilities", "Shopping", "Travel", "Healthcare", "Education", "Personal Care", "Gifts", "Donations", "Grocery shopping", "Electricity bill", "Gas bill", "Internet bill", "Water bill", "Car fuel", "Dinner with friends", "Movie night", "Gym membership", "New phone", "Clothes shopping", "Haircut", "Gift for spouse", "Gift for friend's birthday", "Concert tickets", "Flight tickets", "Hotel stay", "New laptop", "Home repairs", "Books and magazines"};
+    String description = descriptions[random.nextInt(descriptions.length)];
+
+    // Generate random category
+    CategoryType[] categories = {new CategoryType("1", "Groceries", R.drawable.foods), new CategoryType("2", "Transportation", R.drawable.category_work), new CategoryType("3", "Entertainment", R.drawable.category_others), new CategoryType("4", "Utilities", R.drawable.category_electronics), new CategoryType("5", "Shopping", R.drawable.gifts), new CategoryType("6", "Travel", R.drawable.misclencious), new CategoryType("7", "Healthcare", R.drawable.health), new CategoryType("8", "Education", R.drawable.study), new CategoryType("9", "Personal Care", R.drawable.misclencious), new CategoryType("10", "Gifts", R.drawable.gifts), new CategoryType("11", "Donations", R.drawable.category_clothes)};
+
+    CategoryType category = categories[random.nextInt(categories.length)];
+
+    // Generate random timestamp (between 1 and 7 days ago)
+    //long timestamp = System.currentTimeMillis() - random.nextInt(7 * 24 * 60 * 60 * 1000);
+
+    // Generate random timestamp (between 20 years ago and now)
+    long timestamp = System.currentTimeMillis() - (long) (random.nextDouble() * 20 * 365.25 * 24 * 60 * 60 * 1000);
+
+    // Generate random account
+    //{new Account("1", "Bank Account"), new Account("2", "Credit Card"), new Account("3", "Cash")};
+    Account[] accounts = getDummyAccounts(13).toArray(new Account[13]);
+    Account account = accounts[random.nextInt(accounts.length)];
+
+    // Generate random expense photos
+    HashMap<String, ExpensePhoto> expensePhotosHashMap = new HashMap<>();
+    for (int i = 0; i < random.nextInt(3); i++) {
+      long photoTimestamp = System.currentTimeMillis() - random.nextInt(7 * 24 * 60 * 60 * 1000);
+      String imageId = String.valueOf(photoTimestamp);
+      expensePhotosHashMap.put(imageId, new ExpensePhoto(null, null, imageId));
+    }
+
+    // Create new ExpenseModel object with random values
+    ExpenseModel expenseModel = new ExpenseModel();
+    expenseModel.setAmount(amount);
+    expenseModel.setDescription(description);
+    expenseModel.setCategory(category);
+    expenseModel.setTimestamp(timestamp);
+    expenseModel.setAccount(account);
+    expenseModel.setExpensePhotosHashMap(new LinkedHashMap<>());
+
+    return expenseModel;
+  }
+
 }

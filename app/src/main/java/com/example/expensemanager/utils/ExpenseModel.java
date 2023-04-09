@@ -1,33 +1,29 @@
 package com.example.expensemanager.utils;
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
 
 public class ExpenseModel {
   private float amount;
   private String description;
   private CategoryType category;
-  private Calendar calendar;
+  private long timestamp;
   private Account account;
   private HashMap<String, ExpensePhoto> expensePhotosHashMap;
 
-  public ExpenseModel(float amount, String description, CategoryType category, Calendar calendar, Account account, HashMap<String, ExpensePhoto> expensePhotosHashMap) {
+  public ExpenseModel(float amount, String description, CategoryType category, long timestamp, Account account, HashMap<String, ExpensePhoto> expensePhotosHashMap) {
     this.amount = amount;
     this.description = description;
     this.category = category;
-    this.calendar = calendar;
+    this.timestamp = timestamp;
     this.account = account;
     this.expensePhotosHashMap = expensePhotosHashMap;
   }
 
-  public ExpenseModel(float amount, String description, CategoryType category, Calendar calendar, Account account) {
+  public ExpenseModel(float amount, String description, CategoryType category, long timestamp, Account account) {
     this.amount = amount;
     this.description = description;
     this.category = category;
-    this.calendar = calendar;
+    this.timestamp = timestamp;
     this.account = account;
   }
 
@@ -45,7 +41,7 @@ public class ExpenseModel {
     for (String key : expensePhotosHashMap.keySet()) {
       sb.append(expensePhotosHashMap.get(key) + "\t\n");
     }
-    return "ExpenseModel{" + "amount=" + amount + "\t\n description='" + description + "'" + "\t\n category=" + category + "\t\n calendar=" + calendar + "\t\n account=" + account + "\t\n Total expensePhotosHashMap=" + expensePhotosHashMap.size() + "\t\n Photos=" + sb + '}';
+    return "ExpenseModel{" + "amount=" + amount + "\t\n description='" + description + "'" + "\t\n category=" + category + "\t\n calendar=" + timestamp + "\t\n account=" + account + "\t\n Total expensePhotosHashMap=" + expensePhotosHashMap.size() + "\t\n Photos=" + sb + '}';
   }
 
 
@@ -81,12 +77,12 @@ public class ExpenseModel {
     this.category = category;
   }
 
-  public Calendar getCalendar() {
-    return calendar;
+  public long getTimestamp() {
+    return timestamp;
   }
 
-  public void setCalendar(Calendar calendar) {
-    this.calendar = calendar;
+  public void setTimestamp(long timestamp) {
+    this.timestamp = timestamp;
   }
 
   public Account getAccount() {

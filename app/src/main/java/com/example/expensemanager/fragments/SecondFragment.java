@@ -23,9 +23,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-import androidx.navigation.fragment.NavHostFragment;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.expensemanager.R;
@@ -35,17 +33,11 @@ import com.example.expensemanager.utils.Account;
 import com.example.expensemanager.utils.CategoryType;
 import com.example.expensemanager.utils.ExpenseModel;
 import com.example.expensemanager.utils.ExpensePhoto;
+import com.example.expensemanager.utils.FirebaseThings;
 import com.example.expensemanager.utils.Utilities;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Calendar;
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.List;
 
 public class SecondFragment extends Fragment {
@@ -54,6 +46,7 @@ public class SecondFragment extends Fragment {
   private static final String TAG = Fragment.class.toString();
   private static final int SELECT_IMAGE_FROM_GALLERY_CODE = 101;
   private static final int EXPENSE_IMAGES_TO_BE_SHOWN_IN_LINEAR_LAYOUT = 4;
+  private static final String EXPENSE_MODEL_PATH_ON_FIREBASE = "expenseManager/bob/transactions";
 
   private FragmentSecondBinding binding;
   private View rootView;
@@ -67,7 +60,7 @@ public class SecondFragment extends Fragment {
 
 
   //Firebase things
-  private FirebaseFirestore firebaseFirestore;
+  private FirebaseThings firebaseThings = null;
 
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -113,7 +106,8 @@ public class SecondFragment extends Fragment {
 
     defaultCalendar = Calendar.getInstance();
     defaultCalendar.setTimeInMillis(System.currentTimeMillis());
-    expenseModel = new ExpenseModel(197F, "", new CategoryType("1", "Foods", R.drawable.foods), defaultCalendar, new Account("HDFC 6022", "hdfc_6022"), new LinkedHashMap<>());
+    expenseModel = Utilities.createRandomExpenseModel();
+    //new ExpenseModel(197F, "", new CategoryType("1", "Foods", R.drawable.foods), defaultCalendar.getTimeInMillis(), new Account("HDFC 6022", "hdfc_6022"), new LinkedHashMap<>());
 
     //Initialize with their respective views
     viewOfCalendarDialog = getLayoutInflater().inflate(R.layout.dialog_select_date, null);
@@ -121,8 +115,7 @@ public class SecondFragment extends Fragment {
     viewOfPaymentDialog = getLayoutInflater().inflate(R.layout.dialog_payment_mode, null);
 
     //Firebase things
-    FirebaseApp.initializeApp(getActivity());
-    firebaseFirestore = FirebaseFirestore.getInstance();
+    firebaseThings = new FirebaseThings(getContext());
   }
 
   @Override
@@ -259,25 +252,21 @@ public class SecondFragment extends Fragment {
       @Override
       public void onClick(View view) {
         expenseModel.setAmount(Float.parseFloat(binding.edittextAddTransactionAmount.getText() + ""));
-        Toast.makeText(getContext(), expenseModel + "", Toast.LENGTH_LONG).show();
+        // Toast.makeText(getContext(), expenseModel + "", Toast.LENGTH_LONG).show();
         Log.d("showTransaction", expenseModel + "");
 
-        //Add expense to Firebase
-        CollectionReference collectionReference = firebaseFirestore.collection("expenseManager/bob/transactions");
-        collectionReference.add(expenseModel).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
-          @Override
-          public void onComplete(@NonNull Task<DocumentReference> task) {
-            if (task.isSuccessful()) {
-              Toast.makeText(getContext(), "Adding model to Firebase success", Toast.LENGTH_SHORT).show();
-            }
-            else {
-              Toast.makeText(getContext(), "Adding model to Firebase failed", Toast.LENGTH_SHORT).show();
-            }
-          }
-        });
+        //Upload images to Storage
+        //firebaseThings.firebaseGetTransactions(getContext(), null);
+        //Add expense to Firestore
+        firebaseThings.firebaseAddTransaction(expenseModel, getContext());
+        Log.d("expense", expenseModel + "");
 
+        expenseModel = Utilities.createRandomExpenseModel();
+        updateViewFromModel();
       }
     });
+
+
     binding.buttonAddExpenseAddPicture.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
@@ -306,7 +295,9 @@ public class SecondFragment extends Fragment {
     binding.edittextAddTransactionDescription.setText(expenseModel.getDescription());
     binding.edittextAddTransactionCategory.setText(expenseModel.getCategory().getName());
     binding.imageviewAddTransactionCategory.setImageResource(expenseModel.getCategory().getImage());
-    Calendar calendar = expenseModel.getCalendar();
+
+    Calendar calendar = Calendar.getInstance();
+    calendar.setTimeInMillis(expenseModel.getTimestamp());
     setExpenseDate(calendar);
     binding.textviewAddTransactionPayment.setText(expenseModel.getAccount().getName());
   }
@@ -385,9 +376,11 @@ public class SecondFragment extends Fragment {
     datePicker.init(defaultCalendar.get(Calendar.YEAR), defaultCalendar.get(Calendar.MONTH), defaultCalendar.get(Calendar.DAY_OF_MONTH), new DatePicker.OnDateChangedListener() {
       @Override
       public void onDateChanged(DatePicker datePicker1, int year, int month, int dayOfMonth) {
-        expenseModel.getCalendar().set(Calendar.YEAR, year);
-        expenseModel.getCalendar().set(Calendar.MONTH, month);
-        expenseModel.getCalendar().set(Calendar.DATE, dayOfMonth);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(expenseModel.getTimestamp());
+        calendar.set(Calendar.YEAR, year);
+        calendar.set(Calendar.MONTH, month);
+        calendar.set(Calendar.DATE, dayOfMonth);
         calendarDialog.dismiss();
       }
     });

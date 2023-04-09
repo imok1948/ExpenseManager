@@ -3,6 +3,9 @@ public class CategoryType {
   private String id, name;
   private int image;
 
+  public CategoryType() {
+  }
+
   public CategoryType(String id, String name, int image) {
     this.id = id;
     this.name = name;

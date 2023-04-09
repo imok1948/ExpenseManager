@@ -6,8 +6,11 @@ public class ExpensePhoto {
   private Uri thumbnailURI, imageUri;
   private String imageId;
 
-  //imageId is MD5 of image stored in SQL along with its count because multiple expense may have same image
-  //Delete the image if count==0
+  //TODO //imageId is MD5 of image stored in SQL along with its count because multiple expense may have same image
+  //TODO //Delete the image if count==0
+
+  public ExpensePhoto() {
+  }
 
   public ExpensePhoto(Uri thumbnailURI, Uri imageUri, String imageId) {
     this.thumbnailURI = thumbnailURI;

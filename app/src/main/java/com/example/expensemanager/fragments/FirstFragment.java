@@ -19,6 +19,7 @@ import com.example.expensemanager.R;
 import com.example.expensemanager.models.TransactionsModel;
 import com.example.expensemanager.adapters.AdapterTransactions;
 import com.example.expensemanager.databinding.FragmentFirstBinding;
+import com.example.expensemanager.utils.FirebaseThings;
 import com.example.expensemanager.utils.Utilities;
 
 import java.util.LinkedList;
@@ -28,6 +29,10 @@ public class FirstFragment extends Fragment {
 
   private final String TAG = this.getClass().toString();
   private FragmentFirstBinding binding;
+
+
+  //Firebase things
+  private FirebaseThings firebaseThings = null;
 
   public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
@@ -42,6 +47,7 @@ public class FirstFragment extends Fragment {
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     binding = FragmentFirstBinding.inflate(inflater, container, false);
+    firebaseThings = new FirebaseThings(getContext());
     init();
     setupListeners();
 //    NavHostFragment.findNavController(FirstFragment.this).navigate(R.id.action_FirstFragment_to_ShowTransactionDetailsFragment);
@@ -56,10 +62,16 @@ public class FirstFragment extends Fragment {
     LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
     linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
     binding.recyclerViewTransactions.setLayoutManager(linearLayoutManager);
-    List<TransactionsModel> transationList = Utilities.getDummyData(40);
-    AdapterTransactions adapterTransactions = new AdapterTransactions(transationList);
+    //List<TransactionsModel> transationList = Utilities.getDummyData(40);
+
+
+    //AdapterTransactions adapterTransactions = new AdapterTransactions(transationList);
+    AdapterTransactions adapterTransactions = new AdapterTransactions();
     binding.recyclerViewTransactions.setAdapter(adapterTransactions);
     adapterTransactions.notifyDataSetChanged();
+
+    List<TransactionsModel> transationList = firebaseThings.firebaseGetTransactions(getContext(), adapterTransactions);
+
   }
 
   private void setupListeners() {

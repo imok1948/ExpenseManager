@@ -5,6 +5,9 @@ public class Account {
   private float balance;
   //Also add currency type, description
 
+  public Account() {
+  }
+
   public Account(String name, String id) {
     this.name = name;
     this.id = id;
