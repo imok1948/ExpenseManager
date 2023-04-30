@@ -100,6 +100,7 @@
 
 
           <TextView
+            android:id="@+id/text_total_income"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="6dp"
@@ -129,13 +130,14 @@
             android:layout_marginRight="6dp"
             android:layout_marginBottom="8dp"
             android:layout_weight="1"
-            android:text="Outgoing"
-            android:textColor="#FF4800"
+            android:text="Balance"
+            android:textColor="#000000"
             android:textSize="@dimen/summary_details_text"
             android:textStyle="bold" />
 
 
           <TextView
+            android:id="@+id/text_total_balance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="6dp"
@@ -143,7 +145,7 @@
             android:layout_marginBottom="8dp"
             android:layout_weight="1"
             android:text="$ 45593"
-            android:textColor="#FF4800"
+            android:textColor="#000000"
             android:textSize="@dimen/summary_details_number"
             android:textStyle="normal" />
 
@@ -172,6 +174,7 @@
 
 
           <TextView
+            android:id="@+id/text_total_expense"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="6dp"

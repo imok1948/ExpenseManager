@@ -205,6 +205,11 @@ public class Utilities {
 
     // Generate random amount between 1 and 10000
     float amount = random.nextFloat() * 10000;
+    boolean isNegative = random.nextBoolean();
+
+    if(isNegative){
+      amount*=-1;
+    }
 
     // Generate random description
     String[] descriptions = {"Food", "Transportation", "Entertainment", "Utilities", "Shopping", "Travel", "Healthcare", "Education", "Personal Care", "Gifts", "Donations", "Grocery shopping", "Electricity bill", "Gas bill", "Internet bill", "Water bill", "Car fuel", "Dinner with friends", "Movie night", "Gym membership", "New phone", "Clothes shopping", "Haircut", "Gift for spouse", "Gift for friend's birthday", "Concert tickets", "Flight tickets", "Hotel stay", "New laptop", "Home repairs", "Books and magazines"};
@@ -214,9 +219,6 @@ public class Utilities {
     CategoryType[] categories = {new CategoryType("1", "Groceries", R.drawable.foods), new CategoryType("2", "Transportation", R.drawable.category_work), new CategoryType("3", "Entertainment", R.drawable.category_others), new CategoryType("4", "Utilities", R.drawable.category_electronics), new CategoryType("5", "Shopping", R.drawable.gifts), new CategoryType("6", "Travel", R.drawable.misclencious), new CategoryType("7", "Healthcare", R.drawable.health), new CategoryType("8", "Education", R.drawable.study), new CategoryType("9", "Personal Care", R.drawable.misclencious), new CategoryType("10", "Gifts", R.drawable.gifts), new CategoryType("11", "Donations", R.drawable.category_clothes)};
 
     CategoryType category = categories[random.nextInt(categories.length)];
-
-    // Generate random timestamp (between 1 and 7 days ago)
-    //long timestamp = System.currentTimeMillis() - random.nextInt(7 * 24 * 60 * 60 * 1000);
 
     // Generate random timestamp (between 20 years ago and now)
     long timestamp = System.currentTimeMillis() - (long) (random.nextDouble() * 20 * 365.25 * 24 * 60 * 60 * 1000);

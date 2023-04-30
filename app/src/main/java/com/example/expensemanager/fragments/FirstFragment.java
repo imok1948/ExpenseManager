@@ -16,20 +16,26 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.expensemanager.R;
+import com.example.expensemanager.interfaces.FirebaseCallback;
 import com.example.expensemanager.models.TransactionsModel;
 import com.example.expensemanager.adapters.AdapterTransactions;
 import com.example.expensemanager.databinding.FragmentFirstBinding;
+import com.example.expensemanager.utils.ExpenseModel;
 import com.example.expensemanager.utils.FirebaseThings;
 import com.example.expensemanager.utils.Utilities;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-public class FirstFragment extends Fragment {
+public class FirstFragment extends Fragment implements FirebaseCallback {
 
   private final String TAG = this.getClass().toString();
   private FragmentFirstBinding binding;
 
+  //RecyclerView Things
+
+  private AdapterTransactions adapterTransactions;
 
   //Firebase things
   private FirebaseThings firebaseThings = null;
@@ -48,6 +54,8 @@ public class FirstFragment extends Fragment {
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     binding = FragmentFirstBinding.inflate(inflater, container, false);
     firebaseThings = new FirebaseThings(getContext());
+    firebaseThings.setFirebaseCallback(this);
+
     init();
     setupListeners();
 //    NavHostFragment.findNavController(FirstFragment.this).navigate(R.id.action_FirstFragment_to_ShowTransactionDetailsFragment);
@@ -66,12 +74,12 @@ public class FirstFragment extends Fragment {
 
 
     //AdapterTransactions adapterTransactions = new AdapterTransactions(transationList);
-    AdapterTransactions adapterTransactions = new AdapterTransactions();
+    adapterTransactions = new AdapterTransactions();
     binding.recyclerViewTransactions.setAdapter(adapterTransactions);
-    adapterTransactions.notifyDataSetChanged();
 
-    List<TransactionsModel> transationList = firebaseThings.firebaseGetTransactions(getContext(), adapterTransactions);
+    //firebaseThings.firebaseGetTransactions(getContext(), adapterTransactions);
 
+    firebaseThings.firebaseGetTransactions();
   }
 
   private void setupListeners() {
@@ -89,4 +97,32 @@ public class FirstFragment extends Fragment {
     });
   }
 
+  public void setupBalance(float income, float expense) {
+    binding.textTotalIncome.setText(income + "  ₹");
+    binding.textTotalExpense.setText(expense + "  ₹");
+    binding.textTotalBalance.setText((income - expense) + "  ₹");
+  }
+
+  @Override
+  public void onExpensesReceived(List<ExpenseModel> expenseModels) {
+
+    List<TransactionsModel> transactionsModels = new ArrayList<>();
+
+    float totalIncome = 0;
+    float totalExpense = 0;
+
+    for (ExpenseModel expenseModel : expenseModels) {
+      transactionsModels.add(Utilities.convertExpenseModelToTransactionsModel(expenseModel));
+
+      if (expenseModel.getAmount() < 0) {
+        totalExpense += expenseModel.getAmount();
+      }
+      else {
+        totalIncome += expenseModel.getAmount();
+      }
+    }
+    adapterTransactions.setTransactions(transactionsModels);
+    adapterTransactions.notifyDataSetChanged();
+    setupBalance(totalIncome, totalExpense);
+  }
 }

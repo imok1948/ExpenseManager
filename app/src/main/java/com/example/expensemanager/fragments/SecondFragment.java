@@ -258,7 +258,7 @@ public class SecondFragment extends Fragment {
         //Upload images to Storage
         //firebaseThings.firebaseGetTransactions(getContext(), null);
         //Add expense to Firestore
-        firebaseThings.firebaseAddTransaction(expenseModel, getContext());
+        firebaseThings.firebaseAddTransaction(expenseModel);
         Log.d("expense", expenseModel + "");
 
         expenseModel = Utilities.createRandomExpenseModel();
