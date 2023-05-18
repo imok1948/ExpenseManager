@@ -248,7 +248,26 @@ public class SecondFragment extends Fragment {
         paymentModeDialog.show();
       }
     });
+
     binding.textviewAddExpenseButton.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        //This is expense
+        expenseModel.setAmount(-1 * Float.parseFloat(binding.edittextAddTransactionAmount.getText() + ""));
+        // Toast.makeText(getContext(), expenseModel + "", Toast.LENGTH_LONG).show();
+        Log.d("showTransaction", expenseModel + "");
+
+        //Upload images to Storage
+        //firebaseThings.firebaseGetTransactions(getContext(), null);
+        //Add expense to Firestore
+        firebaseThings.firebaseAddTransaction(expenseModel);
+        Log.d("expense", expenseModel + "");
+
+        expenseModel = Utilities.createRandomExpenseModel();
+        updateViewFromModel();
+      }
+    });
+    binding.textviewAddIncomeButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
         expenseModel.setAmount(Float.parseFloat(binding.edittextAddTransactionAmount.getText() + ""));
@@ -265,7 +284,6 @@ public class SecondFragment extends Fragment {
         updateViewFromModel();
       }
     });
-
 
     binding.buttonAddExpenseAddPicture.setOnClickListener(new View.OnClickListener() {
       @Override
@@ -382,6 +400,8 @@ public class SecondFragment extends Fragment {
         calendar.set(Calendar.MONTH, month);
         calendar.set(Calendar.DATE, dayOfMonth);
         calendarDialog.dismiss();
+        expenseModel.setTimestamp(calendar.getTimeInMillis());
+        updateViewFromModel();
       }
     });
 

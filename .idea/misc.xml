@@ -9,6 +9,7 @@
         <entry key="app/src/main/res/drawable/gradient_bar_light.xml" value="0.35" />
         <entry key="app/src/main/res/drawable/menu_search_icon.xml" value="0.1555" />
         <entry key="app/src/main/res/drawable/shape_button_add_expense.xml" value="0.35" />
+        <entry key="app/src/main/res/drawable/shape_button_add_income.xml" value="0.5305" />
         <entry key="app/src/main/res/drawable/shape_dialog_background.xml" value="0.35" />
         <entry key="app/src/main/res/drawable/shape_layout_border_radius.xml" value="0.35" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.29471733086190915" />

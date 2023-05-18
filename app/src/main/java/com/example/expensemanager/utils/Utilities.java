@@ -208,7 +208,8 @@ public class Utilities {
     boolean isNegative = random.nextBoolean();
 
     if(isNegative){
-      amount*=-1;
+      //Negative/positive will be handled while pusing to firebase
+//      amount*=-1;
     }
 
     // Generate random description

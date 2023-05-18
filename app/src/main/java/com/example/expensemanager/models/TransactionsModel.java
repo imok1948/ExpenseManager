@@ -1,5 +1,6 @@
 package com.example.expensemanager.models;
 public class TransactionsModel {
+  //TODO : Need to change TransactionsModel with exact information needed instead of storing them in strings only
   private int transactionImage;
   private String transactionDescription, transactionCategory, transactionDate;
   private String transactionAmount;

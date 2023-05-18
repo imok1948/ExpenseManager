@@ -6,6 +6,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.expensemanager.R;
@@ -139,7 +140,21 @@ public class AdapterTransactions extends RecyclerView.Adapter<AdapterTransaction
       this.image.setImageResource(image);
       this.description.setText(description);
       this.category.setText(category);
-      this.amount.setText(amount);
+      //Get the amount and depending on negative/positive change the color of amount
+      float transactionAmount = Float.parseFloat(amount);
+      if(transactionAmount < 0){
+        //Multiply with -1 to get positive value or value without - sign
+        this.amount.setText((transactionAmount * -1) + "");
+        //Need to change the color to red for sure :D
+        int color = ContextCompat.getColor(this.amount.getContext(), R.color.color_expense);
+        this.amount.setTextColor(color);
+
+      }else{
+        //No need to multiply with -1, already positive value
+        //Change the color to red
+        int color = ContextCompat.getColor(this.amount.getContext(), R.color.color_income);
+        this.amount.setTextColor(color);
+      }
       this.date.setText(date);
     }
 
